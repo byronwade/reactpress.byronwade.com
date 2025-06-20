@@ -1501,17 +1501,15 @@ html:lang(he-il) .rtl #wpadminbar * {
 }
 #wpadminbar #wp-admin-bar-wp-logo > .ab-item .ab-icon:before {
 	content: "";
-		display: block;
-		width: 28px;
-		/* Adjust the width as needed */
-		height: 28px;
-		/* Adjust the height as needed */
-		background: url(../../../public/logo192.png) no-repeat;
-		background-size: contain;
-		/* This ensures that your image fits within the dimensions */
-		position: absolute;
-		top: 0;
-		left: 0;
+    display: block;
+    width: 20px;
+        height: 20px;
+        background: url(../../../public/logo192.png) no-repeat;
+        background-size: contain;
+    position: absolute;
+    top: 6px;
+        left: 6px;
+        filter: invert(1);
 }
 #wpadminbar .quicklinks li .blavatar {
 	display: inline-block;
@@ -16019,6 +16017,7 @@ body.full-overlay-active {
 }
 .svg .wp-badge {
 	background-image: url(../../../public/logo192.png);
+    filter: invert(1);
 }
 .about-wrap .wp-badge {
 	position: absolute;
