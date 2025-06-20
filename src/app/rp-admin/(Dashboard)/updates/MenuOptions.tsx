@@ -27,30 +27,34 @@ export function MenuOptions() {
 							</ul>
 						</div>
 						<div className="w-1/4 p-4 contextual-help-sidebar">
-							<p className="mb-2 font-bold">
-								For more information:
+							<p className="mb-2 font-bold">For more information:</p>
+							<p className="mb-2">
+								<a href="/" className="text-primary hover:underline">
+									Documentation on Updating ReactPress
+								</a>
 							</p>
 							<p className="mb-2">
-								<a href="/" className="text-primary hover:underline">Documentation on Updating ReactPress</a>
+								<a href="/" className="text-primary hover:underline">
+									Learn more: Auto-updates documentation
+								</a>
 							</p>
 							<p className="mb-2">
-								<a href="/" className="text-primary hover:underline">Learn more: Auto-updates documentation</a>
-							</p>
-							<p className="mb-2">
-								<a href="/" className="text-primary hover:underline">Support</a>
+								<a href="/" className="text-primary hover:underline">
+									Support
+								</a>
 							</p>
 						</div>
 						<div className="w-1/2 contextual-help-tabs-wrap">
 							<div id="tab-panel-overview" className="p-4 help-tab-content active">
 								<p className="mb-4">On this screen, you can update to the latest version of ReactPress, as well as update your themes, plugins, and translations from the ReactPress.org repositories.</p>
-								<p className="mb-4">If an update is available, you᾿ll see a notification appear in the Toolbar and navigation menu. Keeping your site updated is important for security. It also makes the internet a safer place for you and your readers.</p>
+								<p className="mb-4">If an update is available, you&apos;ll see a notification appear in the Toolbar and navigation menu. Keeping your site updated is important for security. It also makes the internet a safer place for you and your readers.</p>
 							</div>
 							<div id="tab-panel-how-to-update" className="hidden p-4 help-tab-content">
 								<p className="mb-4">
-									<strong>ReactPress</strong> — Updating your ReactPress installation is a simple one-click procedure: just <strong>click on the "Update now" button</strong> when you are notified that a new version is available. In most cases, ReactPress will automatically apply maintenance and security updates in the background for you.
+									<strong>ReactPress</strong> — Updating your ReactPress installation is a simple one-click procedure: just <strong>click on the &quot;Update now&quot; button</strong> when you are notified that a new version is available. In most cases, ReactPress will automatically apply maintenance and security updates in the background for you.
 								</p>
 								<p className="mb-4">
-									<strong>Themes and Plugins</strong> — To update individual themes or plugins from this screen, use the checkboxes to make your selection, then <strong>click on the appropriate "Update" button</strong>. To update all of your themes or plugins at once, you can check the box at the top of the section to select all before clicking the update button.
+									<strong>Themes and Plugins</strong> — To update individual themes or plugins from this screen, use the checkboxes to make your selection, then <strong>click on the appropriate &quot;Update&quot; button</strong>. To update all of your themes or plugins at once, you can check the box at the top of the section to select all before clicking the update button.
 								</p>
 							</div>
 							<div id="tab-panel-plugins-themes-auto-updates" className="hidden p-4 help-tab-content">

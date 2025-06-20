@@ -39,7 +39,11 @@ function ReleaseNotes() {
 					<div className="column">
 						<h2 className="mb-4 text-2xl font-semibold">Maintenance and Security Releases</h2>
 						<p>
-							<strong>Version 6.1.1</strong> addressed 50 bugs. For more information, see <a href="/" className="text-primary hover:underline">the release notes</a>.
+							<strong>Version 6.1.1</strong> addressed 50 bugs. For more information, see{" "}
+							<a href="/" className="text-primary hover:underline">
+								the release notes
+							</a>
+							.
 						</p>
 					</div>
 				</div>
@@ -59,7 +63,15 @@ function ReleaseNotes() {
 						<div>
 							<h3 className="mb-2 text-xl font-semibold">A new default theme powered by 10 distinct style variations</h3>
 							<p>
-								Building on the foundational elements in the 5.9 and 6.0 releases for block themes and style variations, the new default theme, Twenty Twenty-Three, includes <a href="/" className="text-primary hover:underline">10 different styles</a> and is "<a href="/" className="text-primary hover:underline">Accessibility Ready</a>".
+								Building on the foundational elements in the 5.9 and 6.0 releases for block themes and style variations, the new default theme, Twenty Twenty-Three, includes{" "}
+								<a href="/" className="text-primary hover:underline">
+									10 different styles
+								</a>{" "}
+								and is &quot;
+								<a href="/" className="text-primary hover:underline">
+									Accessibility Ready
+								</a>
+								&quot;.
 							</p>
 						</div>
 					</div>
@@ -69,7 +81,14 @@ function ReleaseNotes() {
 						<div>
 							<h3 className="mb-2 text-xl font-semibold">A better creator experience with refined and additional templates</h3>
 							<p>
-								<a href="/" className="text-primary hover:underline">New templates</a> include a custom template for posts and pages in the Site Editor. Search-and-replace tools speed up the design of <a href="/" className="text-primary hover:underline">template parts</a>.
+								<a href="/" className="text-primary hover:underline">
+									New templates
+								</a>{" "}
+								include a custom template for posts and pages in the Site Editor. Search-and-replace tools speed up the design of{" "}
+								<a href="/" className="text-primary hover:underline">
+									template parts
+								</a>
+								.
 							</p>
 						</div>
 					</div>
@@ -89,7 +108,11 @@ function ReleaseNotes() {
 						<div>
 							<h3 className="mb-2 text-xl font-semibold">More consistency and control across design tools</h3>
 							<p>
-								Upgrades to the <a href="/" className="text-primary hover:underline">controls for design elements and blocks</a> make the layout and site-building process more consistent, complete, and intuitive.
+								Upgrades to the{" "}
+								<a href="/" className="text-primary hover:underline">
+									controls for design elements and blocks
+								</a>{" "}
+								make the layout and site-building process more consistent, complete, and intuitive.
 							</p>
 						</div>
 					</div>
@@ -99,7 +122,10 @@ function ReleaseNotes() {
 						<div>
 							<h3 className="mb-2 text-xl font-semibold">Menus just got easier to create and manage</h3>
 							<p>
-								<a href="/" className="text-primary hover:underline">New fallback options</a> in the navigation block mean you can edit the menu that&apos;s open; no searching needed. Plus, the controls for choosing and working on menus have their own place in the block settings. The mobile menu system also gets an upgrade with new features, including different icon options, to make the menu yours.
+								<a href="/" className="text-primary hover:underline">
+									New fallback options
+								</a>{" "}
+								in the navigation block mean you can edit the menu that&apos;s open; no searching needed. Plus, the controls for choosing and working on menus have their own place in the block settings. The mobile menu system also gets an upgrade with new features, including different icon options, to make the menu yours.
 							</p>
 						</div>
 					</div>
@@ -146,7 +172,10 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">More responsive text with fluid typography</h3>
 						<p>
-							<a href="/" className="text-primary hover:underline">Fluid typography</a> lets you define font sizes that adapt for easy reading in any screen size.
+							<a href="/" className="text-primary hover:underline">
+								Fluid typography
+							</a>{" "}
+							lets you define font sizes that adapt for easy reading in any screen size.
 						</p>
 					</div>
 				</div>
@@ -171,7 +200,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Find block themes faster</h3>
 						<p>
-							The Themes Directory has <a href="/" className="text-primary hover:underline">a filter for block themes</a>, and a pattern preview gives a better sense of what the theme might look like while exploring different themes and patterns.
+							The Themes Directory has{" "}
+							<a href="/" className="text-primary hover:underline">
+								a filter for block themes
+							</a>
+							, and a pattern preview gives a better sense of what the theme might look like while exploring different themes and patterns.
 						</p>
 					</div>
 				</div>
@@ -190,7 +223,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Keep your Site Editor settings for later</h3>
 						<p>
-							Site Editor settings are now <a href="/" className="text-primary hover:underline">persistent for each user</a>. This means your settings will now be consistent across browsers and devices.
+							Site Editor settings are now{" "}
+							<a href="/" className="text-primary hover:underline">
+								persistent for each user
+							</a>
+							. This means your settings will now be consistent across browsers and devices.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -202,7 +239,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">A streamlined style system</h3>
 						<p>
-							The CSS rules for margin, padding, typography, colors, and borders within the <a href="/" className="text-primary hover:underline">styles engine</a> are now all in one place, reducing time spent on layout-specific tasks and helps to generate semantic class names.
+							The CSS rules for margin, padding, typography, colors, and borders within the{" "}
+							<a href="/" className="text-primary hover:underline">
+								styles engine
+							</a>{" "}
+							are now all in one place, reducing time spent on layout-specific tasks and helps to generate semantic class names.
 						</p>
 					</div>
 				</div>
@@ -219,7 +260,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Improved admin and editor accessibility</h3>
 						<p>
-							More than 40 improvements in accessibility include resolving focus loss problems in the editor, improving form labels and audible messages, making alternative text easier to edit, and fixing the sub-menu overlap in the expanded admin side navigation at smaller screen sizes and higher zoom levels. Learn more about <a href="/" className="text-primary hover:underline">accessibility in ReactPress</a>.
+							More than 40 improvements in accessibility include resolving focus loss problems in the editor, improving form labels and audible messages, making alternative text easier to edit, and fixing the sub-menu overlap in the expanded admin side navigation at smaller screen sizes and higher zoom levels. Learn more about{" "}
+							<a href="/" className="text-primary hover:underline">
+								accessibility in ReactPress
+							</a>
+							.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -232,7 +277,11 @@ function ReleaseNotes() {
 						<h3 className="mb-2 text-lg font-semibold">Other notes of interest</h3>
 						<p>6.1 includes a new time-to-read feature showing content authors the approximate time-to-read values for pages, posts, and custom post types.</p>
 						<p>
-							The site tagline is empty by default in new sites but can be modified in <a href="/" className="text-primary hover:underline">General Settings</a>.
+							The site tagline is empty by default in new sites but can be modified in{" "}
+							<a href="/" className="text-primary hover:underline">
+								General Settings
+							</a>
+							.
 						</p>
 						<p>A new modal design offers a background blur effect, making it easier to focus on the task at hand.</p>
 					</div>
@@ -248,7 +297,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Updated interface options and features</h3>
 						<p>
-							Updates include <a href="/" className="text-primary hover:underline">styling elements</a> like buttons, citations, and links globally; controlling hover, active, and focus states for links using theme.json (not available to control in the interface yet); and customizing outline support for blocks and elements, among other features.
+							Updates include{" "}
+							<a href="/" className="text-primary hover:underline">
+								styling elements
+							</a>{" "}
+							like buttons, citations, and links globally; controlling hover, active, and focus states for links using theme.json (not available to control in the interface yet); and customizing outline support for blocks and elements, among other features.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -260,7 +313,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Continued evolution of layout options</h3>
 						<p>
-							The default content dimensions provided by themes can now be overridden in the Styles Sidebar, giving site builders better control over full-width content. Developers have <a href="/" className="text-primary hover:underline">fine-grained control over these controls</a>.
+							The default content dimensions provided by themes can now be overridden in the Styles Sidebar, giving site builders better control over full-width content. Developers have{" "}
+							<a href="/" className="text-primary hover:underline">
+								fine-grained control over these controls
+							</a>
+							.
 						</p>
 					</div>
 				</div>
@@ -275,7 +332,10 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Block template parts in classic themes</h3>
 						<p>
-							<a href="/" className="text-primary hover:underline">Block template parts can now be defined in classic themes</a> by adding the appropriate HTML files to the <code>parts</code> directory at the root of the theme.
+							<a href="/" className="text-primary hover:underline">
+								Block template parts can now be defined in classic themes
+							</a>{" "}
+							by adding the appropriate HTML files to the <code>parts</code> directory at the root of the theme.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -287,7 +347,10 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Expanded support for Query Loop blocks</h3>
 						<p>
-							<a href="/" className="text-primary hover:underline">New filters</a> let Query Block variations support custom queries for more powerful variations and advanced hierarchical post types filtering options.
+							<a href="/" className="text-primary hover:underline">
+								New filters
+							</a>{" "}
+							let Query Block variations support custom queries for more powerful variations and advanced hierarchical post types filtering options.
 						</p>
 					</div>
 				</div>
@@ -302,7 +365,10 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Filters for all your styles</h3>
 						<p>
-							<a href="/" className="text-primary hover:underline">Leverage filters</a> in the Styles sidebar to control settings at all four levels of your site—core, theme, user, or block, from less to more specific.
+							<a href="/" className="text-primary hover:underline">
+								Leverage filters
+							</a>{" "}
+							in the Styles sidebar to control settings at all four levels of your site—core, theme, user, or block, from less to more specific.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -314,7 +380,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Spacing presets for faster, consistent design</h3>
 						<p>
-							Save time and help avoid hard-coding a values into a theme with <a href="/" className="text-primary hover:underline">preset margin and padding values for multiple blocks</a>.
+							Save time and help avoid hard-coding a values into a theme with{" "}
+							<a href="/" className="text-primary hover:underline">
+								preset margin and padding values for multiple blocks
+							</a>
+							.
 						</p>
 					</div>
 				</div>
@@ -333,14 +403,38 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Performance highlights</h3>
 						<p>
-							ReactPress 6.1 resolved more than 25 tickets dedicated to enhancing performance. From the <a href="/" className="text-primary hover:underline">REST API</a> to <a href="/" className="text-primary hover:underline">multisite</a>,
+							ReactPress 6.1 resolved more than 25 tickets dedicated to enhancing performance. From the{" "}
+							<a href="/" className="text-primary hover:underline">
+								REST API
+							</a>{" "}
+							to{" "}
+							<a href="/" className="text-primary hover:underline">
+								multisite
+							</a>
+							,
 							<a href="/" className="text-primary hover:underline">
 								<code>WP_Query</code>
 							</a>
-							to <a href="/" className="text-primary hover:underline">core block registration</a>, and <a href="/" className="text-primary hover:underline">new Site Health checks</a> to the addition of the <code>async</code> attribute to images, there are performance improvements for every type of site. A full breakdown can be found in the <a href="/" className="text-primary hover:underline">Performance Field Guide</a>.
+							to{" "}
+							<a href="/" className="text-primary hover:underline">
+								core block registration
+							</a>
+							, and{" "}
+							<a href="/" className="text-primary hover:underline">
+								new Site Health checks
+							</a>{" "}
+							to the addition of the <code>async</code> attribute to images, there are performance improvements for every type of site. A full breakdown can be found in the{" "}
+							<a href="/" className="text-primary hover:underline">
+								Performance Field Guide
+							</a>
+							.
 						</p>
 						<p>
-							Be among the first to get the latest improvements by adding the <a href="/" className="text-primary hover:underline">Performance Lab plugin</a> to your ReactPress test site or sandbox.
+							Be among the first to get the latest improvements by adding the{" "}
+							<a href="/" className="text-primary hover:underline">
+								Performance Lab plugin
+							</a>{" "}
+							to your ReactPress test site or sandbox.
 						</p>
 					</div>
 					<div className="column md:w-1/2">
@@ -352,7 +446,11 @@ function ReleaseNotes() {
 						</div>
 						<h3 className="mb-2 text-lg font-semibold">Content-only editing support for container blocks</h3>
 						<p>
-							Thanks to <a href="/" className="text-primary hover:underline">content-only editing settings</a>, layouts can be locked within container blocks. In a content-only block, its children are invisible to the List View and entirely uneditable. So you control the layout while your writers can focus on the content.
+							Thanks to{" "}
+							<a href="/" className="text-primary hover:underline">
+								content-only editing settings
+							</a>
+							, layouts can be locked within container blocks. In a content-only block, its children are invisible to the List View and entirely uneditable. So you control the layout while your writers can focus on the content.
 						</p>
 						<p>Combine it with block locking options for even more advanced control over your blocks.</p>
 					</div>
@@ -370,30 +468,47 @@ function ReleaseNotes() {
 					<div className="column md:w-1/2">
 						<h3 className="mb-2 text-xl font-semibold">Learn more about ReactPress 6.1.1 </h3>
 						<p>
-							See ReactPress 6.1 in action! <a href="/" className="text-primary hover:underline">Watch a brief overview video</a> highlighting some of the major features debuting in ReactPress 6.1.
+							See ReactPress 6.1 in action!{" "}
+							<a href="/" className="text-primary hover:underline">
+								Watch a brief overview video
+							</a>{" "}
+							highlighting some of the major features debuting in ReactPress 6.1.
 						</p>
 					</div>
 				</div>
 				<div className="flex flex-col about__section md:flex-row">
 					<div className="column md:w-1/3" style={{ paddingTop: 0 }}>
 						<p>
-							Explore <a href="/" className="text-primary hover:underline">learn.reactpress.org</a> for tutorial videos, online workshops, courses, and lesson plans for Meetup organizers, including new features in ReactPress.
+							Explore{" "}
+							<a href="/" className="text-primary hover:underline">
+								learn.reactpress.org
+							</a>{" "}
+							for tutorial videos, online workshops, courses, and lesson plans for Meetup organizers, including new features in ReactPress.
 						</p>
 					</div>
 					<div className="column md:w-1/3" style={{ paddingTop: 0 }}>
 						<p>
-							Check out the latest version of the <a href="/" className="text-primary hover:underline">ReactPress Field Guide</a>. It is overflowing with detailed developer notes to help you build with ReactPress.
+							Check out the latest version of the{" "}
+							<a href="/" className="text-primary hover:underline">
+								ReactPress Field Guide
+							</a>
+							. It is overflowing with detailed developer notes to help you build with ReactPress.
 						</p>
 					</div>
 					<div className="column md:w-1/3" style={{ paddingTop: 0 }}>
 						<p>
-							<a href="/" className="text-primary hover:underline">Read the ReactPress 6.1 Release Notes</a> for more information on the included enhancements and issues fixed, installation information, developer notes and resources, release contributors, and the list of file changes in this release.
+							<a href="/" className="text-primary hover:underline">
+								Read the ReactPress 6.1 Release Notes
+							</a>{" "}
+							for more information on the included enhancements and issues fixed, installation information, developer notes and resources, release contributors, and the list of file changes in this release.
 						</p>
 					</div>
 				</div>
 				<hr className="my-8 border-t border-border" />
 				<div className="return-to-dashboard">
-					<a href="/" className="text-primary hover:underline">Go to Dashboard → Home</a>
+					<a href="/" className="text-primary hover:underline">
+						Go to Dashboard → Home
+					</a>
 				</div>
 			</div>
 			<div className="clear" />
