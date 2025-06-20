@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePerformanceMonitor } from "./link";
 
 interface PerformanceMetrics {
 	lcp?: number;
@@ -10,6 +9,54 @@ interface PerformanceMetrics {
 	fcp?: number;
 	ttfb?: number;
 }
+
+// Performance monitoring hook
+export const usePerformanceMonitor = () => {
+	const [metrics, setMetrics] = useState<PerformanceMetrics>({});
+
+	useEffect(() => {
+		// Monitor Web Vitals
+		if (typeof window !== "undefined" && "PerformanceObserver" in window) {
+			// Largest Contentful Paint
+			const lcpObserver = new PerformanceObserver((list) => {
+				const entries = list.getEntries();
+				const lastEntry = entries[entries.length - 1] as any;
+				setMetrics((prev) => ({ ...prev, lcp: lastEntry.startTime }));
+			});
+			lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
+
+			// First Input Delay
+			const fidObserver = new PerformanceObserver((list) => {
+				const entries = list.getEntries();
+				entries.forEach((entry: any) => {
+					setMetrics((prev) => ({ ...prev, fid: entry.processingStart - entry.startTime }));
+				});
+			});
+			fidObserver.observe({ entryTypes: ["first-input"] });
+
+			// Cumulative Layout Shift
+			const clsObserver = new PerformanceObserver((list) => {
+				let clsValue = 0;
+				const entries = list.getEntries();
+				entries.forEach((entry: any) => {
+					if (!entry.hadRecentInput) {
+						clsValue += entry.value;
+					}
+				});
+				setMetrics((prev) => ({ ...prev, cls: clsValue }));
+			});
+			clsObserver.observe({ entryTypes: ["layout-shift"] });
+
+			return () => {
+				lcpObserver.disconnect();
+				fidObserver.disconnect();
+				clsObserver.disconnect();
+			};
+		}
+	}, []);
+
+	return metrics;
+};
 
 interface PerformanceMonitorProps {
 	showInDev?: boolean;

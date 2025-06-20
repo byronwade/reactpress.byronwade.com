@@ -23,15 +23,24 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 	const [isIntersecting, setIsIntersecting] = useState(false);
 	const prefetchTimeoutRef = useRef<NodeJS.Timeout>();
 
-	// Prefetch function
+	// Prefetch function with better error handling
 	const prefetchRoute = useCallback(() => {
 		if (!isPrefetched && typeof props.href === "string") {
-			router.prefetch(props.href);
-			setIsPrefetched(true);
+			try {
+				router.prefetch(props.href);
+				setIsPrefetched(true);
+
+				// Log prefetch for debugging
+				if (process.env.NODE_ENV === "development") {
+					console.log(`🚀 Prefetched: ${props.href}`);
+				}
+			} catch (error) {
+				console.warn(`Failed to prefetch ${props.href}:`, error);
+			}
 		}
 	}, [router, props.href, isPrefetched]);
 
-	// Intersection Observer for viewport-based prefetching
+	// Intersection Observer for viewport-based prefetching (like NextFaster)
 	useEffect(() => {
 		if (prefetchStrategy !== "viewport" || !linkRef.current) return;
 
@@ -53,14 +62,14 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 		return () => observer.disconnect();
 	}, [prefetchStrategy, prefetchRoute]);
 
-	// Immediate prefetching
+	// Immediate prefetching for critical links
 	useEffect(() => {
 		if (prefetchStrategy === "immediate") {
 			prefetchRoute();
 		}
 	}, [prefetchStrategy, prefetchRoute]);
 
-	// Hover-based prefetching with delay
+	// Hover-based prefetching with delay (like NextFaster)
 	const handleMouseEnter = useCallback(() => {
 		if (prefetchStrategy === "hover") {
 			prefetchTimeoutRef.current = setTimeout(prefetchRoute, prefetchDelay);
@@ -73,7 +82,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 		}
 	}, []);
 
-	// Touch-based prefetching for mobile
+	// Touch-based prefetching for mobile (immediate on touch)
 	const handleTouchStart = useCallback(() => {
 		if (prefetchStrategy === "hover") {
 			prefetchRoute();
@@ -144,7 +153,32 @@ export const usePrefetch = () => {
 
 	return useCallback(
 		(href: string) => {
-			router.prefetch(href);
+			try {
+				router.prefetch(href);
+				if (process.env.NODE_ENV === "development") {
+					console.log(`🚀 Programmatic prefetch: ${href}`);
+				}
+			} catch (error) {
+				console.warn(`Failed to prefetch ${href}:`, error);
+			}
+		},
+		[router]
+	);
+};
+
+// Advanced prefetching hook for multiple routes
+export const useAdvancedPrefetch = () => {
+	const router = useRouter();
+
+	return useCallback(
+		(routes: string[]) => {
+			routes.forEach((route) => {
+				try {
+					router.prefetch(route);
+				} catch (error) {
+					console.warn(`Failed to prefetch ${route}:`, error);
+				}
+			});
 		},
 		[router]
 	);
