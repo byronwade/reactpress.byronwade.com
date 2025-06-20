@@ -1,0 +1,14 @@
+
+> reactpress@1.2.0 build
+> next build
+
+   ▲ Next.js 15.3.4
+   - Environments: .env
+   - Experiments (use with caution):
+     · staleTimes
+     ✓ optimizeCss
+
+   Creating an optimized production build ...
+   Using tsconfig file: ./tsconfig.json
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies

@@ -357,7 +357,7 @@ export default function PluginEditor() {
 																	1
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -390,7 +390,7 @@ export default function PluginEditor() {
 																	2
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -423,7 +423,7 @@ export default function PluginEditor() {
 																	3
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -456,7 +456,7 @@ export default function PluginEditor() {
 																	4
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -489,7 +489,7 @@ export default function PluginEditor() {
 																	5
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -522,7 +522,7 @@ export default function PluginEditor() {
 																	6
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -555,7 +555,7 @@ export default function PluginEditor() {
 																	7
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -588,7 +588,7 @@ export default function PluginEditor() {
 																	8
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -621,7 +621,7 @@ export default function PluginEditor() {
 																	9
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -654,7 +654,7 @@ export default function PluginEditor() {
 																	10
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -687,7 +687,7 @@ export default function PluginEditor() {
 																	11
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -720,7 +720,7 @@ export default function PluginEditor() {
 																	12
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -753,7 +753,7 @@ export default function PluginEditor() {
 																	13
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -786,7 +786,7 @@ export default function PluginEditor() {
 																	14
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -819,7 +819,7 @@ export default function PluginEditor() {
 																	15
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -852,7 +852,7 @@ export default function PluginEditor() {
 																	16
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -885,7 +885,7 @@ export default function PluginEditor() {
 																	17
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -918,7 +918,7 @@ export default function PluginEditor() {
 																	18
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -951,7 +951,7 @@ export default function PluginEditor() {
 																	19
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -984,7 +984,7 @@ export default function PluginEditor() {
 																	20
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1017,7 +1017,7 @@ export default function PluginEditor() {
 																	21
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1050,7 +1050,7 @@ export default function PluginEditor() {
 																	22
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1083,7 +1083,7 @@ export default function PluginEditor() {
 																	23
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1116,7 +1116,7 @@ export default function PluginEditor() {
 																	24
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1149,7 +1149,7 @@ export default function PluginEditor() {
 																	25
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1182,7 +1182,7 @@ export default function PluginEditor() {
 																	26
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1215,7 +1215,7 @@ export default function PluginEditor() {
 																	27
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1248,7 +1248,7 @@ export default function PluginEditor() {
 																	28
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1281,7 +1281,7 @@ export default function PluginEditor() {
 																	29
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1314,7 +1314,7 @@ export default function PluginEditor() {
 																	30
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1347,7 +1347,7 @@ export default function PluginEditor() {
 																	31
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1383,7 +1383,7 @@ export default function PluginEditor() {
 																	32
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1416,7 +1416,7 @@ export default function PluginEditor() {
 																	33
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1449,7 +1449,7 @@ export default function PluginEditor() {
 																	34
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1482,7 +1482,7 @@ export default function PluginEditor() {
 																	35
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1515,7 +1515,7 @@ export default function PluginEditor() {
 																	36
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1548,7 +1548,7 @@ export default function PluginEditor() {
 																	37
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1581,7 +1581,7 @@ export default function PluginEditor() {
 																	38
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1614,7 +1614,7 @@ export default function PluginEditor() {
 																	39
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1647,7 +1647,7 @@ export default function PluginEditor() {
 																	40
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1680,7 +1680,7 @@ export default function PluginEditor() {
 																	41
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1713,7 +1713,7 @@ export default function PluginEditor() {
 																	42
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1746,7 +1746,7 @@ export default function PluginEditor() {
 																	43
 																</div>
 															</div>
-															<pre className=" CodeMirror-line " role="presentation">
+															<pre className="CodeMirror-line" role="presentation">
 																<span
 																	role="presentation"
 																	style={{
@@ -1835,7 +1835,7 @@ export default function PluginEditor() {
 							</select>
 						</div>
 						<div className="editor-notices">
-							<div className="notice notice-warning inline active-plugin-edit-warning">
+							<div className="inline notice notice-warning active-plugin-edit-warning">
 								<p>
 									<strong>Warning:</strong> Making changes to active plugins is not recommended.
 								</p>
