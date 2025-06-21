@@ -16,7 +16,7 @@ interface SmartLinkProps extends React.ComponentProps<typeof Link> {
 	};
 }
 
-const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, className, prefetchStrategy = "hover", prefetchDelay = 100, analytics, ...props }, ref) => {
+const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, className, prefetchStrategy = "hover", prefetchDelay = 100, analytics, onClick, href, ...props }, ref) => {
 	const router = useRouter();
 	const linkRef = useRef<HTMLAnchorElement>(null);
 	const [isPrefetched, setIsPrefetched] = useState(false);
@@ -25,20 +25,20 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 
 	// Prefetch function with better error handling
 	const prefetchRoute = useCallback(() => {
-		if (!isPrefetched && typeof props.href === "string") {
+		if (!isPrefetched && typeof href === "string") {
 			try {
-				router.prefetch(props.href);
+				router.prefetch(href);
 				setIsPrefetched(true);
 
 				// Log prefetch for debugging
 				if (process.env.NODE_ENV === "development") {
-					console.log(`🚀 Prefetched: ${props.href}`);
+					console.log(`🚀 Prefetched: ${href}`);
 				}
 			} catch (error) {
-				console.warn(`Failed to prefetch ${props.href}:`, error);
+				console.warn(`Failed to prefetch ${href}:`, error);
 			}
 		}
-	}, [router, props.href, isPrefetched]);
+	}, [router, href, isPrefetched]);
 
 	// Intersection Observer for viewport-based prefetching (like NextFaster)
 	useEffect(() => {
@@ -72,9 +72,9 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 	// Hover-based prefetching with delay (like NextFaster)
 	const handleMouseEnter = useCallback(() => {
 		if (prefetchStrategy === "hover") {
-			prefetchTimeoutRef.current = setTimeout(prefetchRoute, prefetchDelay);
+			prefetchRoute();
 		}
-	}, [prefetchStrategy, prefetchRoute, prefetchDelay]);
+	}, [prefetchStrategy, prefetchRoute]);
 
 	const handleMouseLeave = useCallback(() => {
 		if (prefetchTimeoutRef.current) {
@@ -100,11 +100,11 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 			}
 
 			// Call original onClick if provided
-			if (props.onClick) {
-				props.onClick(e);
+			if (onClick) {
+				onClick(e);
 			}
 		},
-		[analytics, props.onClick]
+		[analytics, onClick]
 	);
 
 	// Clean up timeout on unmount
@@ -119,6 +119,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({ children, cla
 	return (
 		<Link
 			{...props}
+			href={href}
 			ref={(node) => {
 				// Handle both forwarded ref and internal ref
 				if (typeof ref === "function") {
@@ -200,7 +201,7 @@ export const usePerformanceMonitor = () => {
 			// Largest Contentful Paint
 			const lcpObserver = new PerformanceObserver((list) => {
 				const entries = list.getEntries();
-				const lastEntry = entries[entries.length - 1] as any;
+				const lastEntry = entries[entries.length - 1];
 				setMetrics((prev) => ({ ...prev, lcp: lastEntry.startTime }));
 			});
 			lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
@@ -208,32 +209,48 @@ export const usePerformanceMonitor = () => {
 			// First Input Delay
 			const fidObserver = new PerformanceObserver((list) => {
 				const entries = list.getEntries();
-				entries.forEach((entry: any) => {
-					setMetrics((prev) => ({ ...prev, fid: entry.processingStart - entry.startTime }));
-				});
+				const firstEntry = entries[0] as PerformanceEventTiming;
+				setMetrics((prev) => ({ ...prev, fid: firstEntry.processingStart - firstEntry.startTime }));
 			});
 			fidObserver.observe({ entryTypes: ["first-input"] });
 
 			// Cumulative Layout Shift
 			const clsObserver = new PerformanceObserver((list) => {
 				let clsValue = 0;
-				const entries = list.getEntries();
-				entries.forEach((entry: any) => {
-					if (!entry.hadRecentInput) {
-						clsValue += entry.value;
+				for (const entry of list.getEntries()) {
+					const layoutShiftEntry = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
+					if (!layoutShiftEntry.hadRecentInput) {
+						clsValue += layoutShiftEntry.value;
 					}
-				});
+				}
 				setMetrics((prev) => ({ ...prev, cls: clsValue }));
 			});
 			clsObserver.observe({ entryTypes: ["layout-shift"] });
+
+			// First Contentful Paint
+			const fcpObserver = new PerformanceObserver((list) => {
+				const entries = list.getEntries();
+				const firstEntry = entries[0];
+				setMetrics((prev) => ({ ...prev, fcp: firstEntry.startTime }));
+			});
+			fcpObserver.observe({ entryTypes: ["first-contentful-paint"] });
+
+			// Time to First Byte
+			const navigationEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+			if (navigationEntry) {
+				setMetrics((prev) => ({ ...prev, ttfb: navigationEntry.responseStart - navigationEntry.requestStart }));
+			}
 
 			return () => {
 				lcpObserver.disconnect();
 				fidObserver.disconnect();
 				clsObserver.disconnect();
+				fcpObserver.disconnect();
 			};
 		}
 	}, []);
 
 	return metrics;
 };
+
+export { Link };

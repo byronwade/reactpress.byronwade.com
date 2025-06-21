@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { SmartLink } from "@/components/ui/link";
+import Link from "next/link";
 import { ArrowRight, Github, CheckCircle, Calendar } from "lucide-react";
 import Image from "next/image";
 
@@ -14,31 +14,14 @@ export default function HomePage() {
 						<span className="text-xl font-semibold">ReactPress</span>
 					</div>
 					<nav className="flex gap-4 items-center" role="navigation" aria-label="Main navigation">
-						<SmartLink
-							href="https://github.com/byronwade/ReactPress"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-sm transition-colors text-muted-foreground hover:text-foreground"
-							prefetchStrategy="hover"
-							analytics={{
-								event: "external_link_click",
-								properties: { destination: "github" },
-							}}
-						>
+						<Link href="https://github.com/byronwade/ReactPress" target="_blank" rel="noopener noreferrer" className="text-sm transition-colors text-muted-foreground hover:text-foreground">
 							GitHub
-						</SmartLink>
-						<SmartLink
-							href="/rp-admin"
-							prefetchStrategy="immediate"
-							analytics={{
-								event: "internal_link_click",
-								properties: { destination: "admin_demo" },
-							}}
-						>
+						</Link>
+						<Link href="/rp-admin">
 							<Button variant="outline" size="sm">
 								Admin Demo
 							</Button>
-						</SmartLink>
+						</Link>
 					</nav>
 				</div>
 			</header>
@@ -74,34 +57,18 @@ export default function HomePage() {
 							Get Started with ReactPress
 						</h2>
 						<div className="flex gap-4 items-center">
-							<SmartLink
-								href="/rp-admin"
-								prefetchStrategy="immediate"
-								analytics={{
-									event: "cta_click",
-									properties: { button: "view_admin_demo" },
-								}}
-							>
+							<Link href="/rp-admin">
 								<Button className="h-11">
 									View Admin Demo
 									<ArrowRight className="ml-2 w-4 h-4" />
 								</Button>
-							</SmartLink>
-							<SmartLink
-								href="https://github.com/byronwade/ReactPress"
-								target="_blank"
-								rel="noopener noreferrer"
-								prefetchStrategy="hover"
-								analytics={{
-									event: "cta_click",
-									properties: { button: "source_code" },
-								}}
-							>
+							</Link>
+							<Link href="https://github.com/byronwade/ReactPress" target="_blank" rel="noopener noreferrer">
 								<Button variant="outline" className="h-11">
 									<Github className="mr-2 w-4 h-4" />
 									Source Code
 								</Button>
-							</SmartLink>
+							</Link>
 						</div>
 
 						<p className="text-sm text-muted-foreground">
@@ -291,21 +258,21 @@ export default function HomePage() {
 							<span>•</span>
 							<span>
 								Built by{" "}
-								<SmartLink href="https://byronwade.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" prefetchStrategy="hover">
+								<Link href="https://byronwade.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
 									Byron Wade
-								</SmartLink>
+								</Link>
 							</span>
 						</div>
 						<div className="flex gap-4 items-center">
-							<SmartLink href="https://byronwade.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" prefetchStrategy="hover">
+							<Link href="https://byronwade.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
 								Website
-							</SmartLink>
-							<SmartLink href="https://twitter.com/byron_c_wade" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" prefetchStrategy="hover">
+							</Link>
+							<Link href="https://twitter.com/byron_c_wade" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
 								Twitter
-							</SmartLink>
-							<SmartLink href="https://github.com/byronwade/ReactPress" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" prefetchStrategy="hover">
+							</Link>
+							<Link href="https://github.com/byronwade/ReactPress" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
 								GitHub
-							</SmartLink>
+							</Link>
 						</div>
 					</div>
 					<div className="mt-4 text-xs text-center text-muted-foreground">

@@ -7,31 +7,9 @@ const nextConfig = {
 	poweredByHeader: false,
 	generateEtags: true,
 
-	// Experimental features for Next.js 15 and performance
+	// Simplified experimental features
 	experimental: {
-		// Partial Prerendering (PPR) - Only available in canary
-		// ppr: true, // Disabled for stable version
-
-		// Performance optimizations
 		optimizeCss: true,
-		optimizePackageImports: ["lucide-react", "@heroicons/react", "@radix-ui/react-icons", "framer-motion"],
-
-		// Advanced caching and prefetching
-		staleTimes: {
-			dynamic: 30,
-			static: 180,
-		},
-
-		// Server actions optimization
-		serverActions: {
-			allowedOrigins: ["localhost:3000", "localhost:3001", "reactpress.byronwade.com"],
-		},
-
-		// Memory optimization
-		esmExternals: true,
-
-		// WebAssembly support
-		webVitalsAttribution: ["CLS", "LCP", "FCP", "FID", "TTFB"],
 	},
 
 	// Enhanced image optimization for SEO and performance
@@ -60,7 +38,7 @@ const nextConfig = {
 		loader: "default",
 	},
 
-	// Headers for SEO, security, and performance
+	// Basic headers
 	async headers() {
 		return [
 			{
@@ -77,68 +55,6 @@ const nextConfig = {
 					{
 						key: "Referrer-Policy",
 						value: "strict-origin-when-cross-origin",
-					},
-					{
-						key: "Permissions-Policy",
-						value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-					},
-					{
-						key: "X-DNS-Prefetch-Control",
-						value: "on",
-					},
-					// Preload critical resources
-					{
-						key: "Link",
-						value: "</logo192.png>; rel=preload; as=image",
-					},
-				],
-			},
-			{
-				source: "/sitemap.xml",
-				headers: [
-					{
-						key: "Content-Type",
-						value: "application/xml",
-					},
-					{
-						key: "Cache-Control",
-						value: "public, max-age=86400, s-maxage=86400",
-					},
-				],
-			},
-			{
-				source: "/robots.txt",
-				headers: [
-					{
-						key: "Content-Type",
-						value: "text/plain",
-					},
-					{
-						key: "Cache-Control",
-						value: "public, max-age=86400, s-maxage=86400",
-					},
-				],
-			},
-			{
-				source: "/(.*)\\.(ico|png|jpg|jpeg|svg|webp|avif)",
-				headers: [
-					{
-						key: "Cache-Control",
-						value: "public, max-age=31536000, immutable",
-					},
-				],
-			},
-			// Font optimization headers
-			{
-				source: "/(.*)\\.(woff|woff2|eot|ttf|otf)",
-				headers: [
-					{
-						key: "Cache-Control",
-						value: "public, max-age=31536000, immutable",
-					},
-					{
-						key: "Access-Control-Allow-Origin",
-						value: "*",
 					},
 				],
 			},
@@ -159,56 +75,17 @@ const nextConfig = {
 		];
 	},
 
-	// Advanced Webpack optimizations inspired by NextFaster
-	webpack: (config, { isServer, dev, webpack }) => {
+	// Simplified webpack config
+	webpack: (config, { isServer, dev }) => {
+		// Disable webpack cache to prevent hanging
+		config.cache = false;
+
 		if (!isServer) {
 			config.resolve.fallback = {
 				fs: false,
 				path: false,
 				os: false,
 			};
-		}
-
-		// Optimize bundle for production
-		if (!dev) {
-			config.optimization.splitChunks = {
-				chunks: "all",
-				minSize: 20000,
-				maxSize: 244000,
-				cacheGroups: {
-					default: {
-						minChunks: 2,
-						priority: -20,
-						reuseExistingChunk: true,
-					},
-					vendor: {
-						test: /[\\/]node_modules[\\/]/,
-						name: "vendors",
-						priority: -10,
-						chunks: "all",
-					},
-					// Separate chunk for large libraries
-					react: {
-						test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-						name: "react",
-						chunks: "all",
-						priority: 10,
-					},
-					// WordPress components chunk
-					wordpress: {
-						test: /[\\/]node_modules[\\/]@wordpress[\\/]/,
-						name: "wordpress",
-						chunks: "all",
-						priority: 5,
-					},
-				},
-			};
-
-			// Module concatenation for better tree shaking
-			config.optimization.concatenateModules = true;
-
-			// Minimize CSS
-			config.optimization.minimize = true;
 		}
 
 		// Bundle analyzer
@@ -232,14 +109,11 @@ const nextConfig = {
 	// Compiler optimizations
 	compiler: {
 		removeConsole: process.env.NODE_ENV === "production",
-		// React compiler optimizations (removed for stability)
 	},
 
 	// TypeScript configuration
 	typescript: {
 		ignoreBuildErrors: false,
-		// Type checking optimization
-		tsconfigPath: "./tsconfig.json",
 	},
 
 	// ESLint configuration
