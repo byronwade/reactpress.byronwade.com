@@ -14,10 +14,11 @@ risk analysis. This document is the step-by-step process and the running queue.
    real `<body>` and `wp-toolbar` onto `<html>` (scoped to admin routes), and
    restore `#wpwrap`. Until this is done, layout/offset rules don't match — this
    is the root cause of the admin-bar/list-table styling looking off.
-2. **Add WP design tokens to `tailwind.config.js`:** the Fresh color palette
-   (named), `screens` = `{ 'wp-sm':'600px','wp-md':'782px','wp-fold':'960px' }`,
-   the system font stack, `borderRadius` `wp:3px`/`wp-input:4px`. Then converted
-   utilities use real WordPress values instead of Tailwind defaults.
+2. ✅ **WP design tokens added to `tailwind.config.js`** (`theme.extend`): the
+   Fresh palette under `colors.wp.*` (`bg-wp-blue`, `text-wp-text`,
+   `border-wp-border-input`, …), `screens` `wp-sm:600px`/`wp-md:782px`/
+   `wp-fold:960px`, `fontFamily.wp` (system stack), and `borderRadius`
+   `wp:3px`/`wp-input:4px`. Converted utilities now hit exact WordPress values.
 3. Only then convert **leaf** components, smallest-first (table below). The
    structural shell, dashicons, and color-scheme layer stay as authored CSS.
 

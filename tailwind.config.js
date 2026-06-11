@@ -8,10 +8,24 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
     	extend: {
+    		// WordPress admin (wp-admin) design tokens — "Fresh" scheme, WP 6.1.x.
+    		// Source-verified in docs/WORDPRESS-DESIGN-SYSTEM.md. Use these when
+    		// converting index.css to Tailwind so utilities hit exact WP values
+    		// (real WordPress breakpoints, not Tailwind's sm/md/lg).
+    		screens: {
+    			'wp-sm': '600px',
+    			'wp-md': '782px',
+    			'wp-fold': '960px'
+    		},
+    		fontFamily: {
+    			wp: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', '"Helvetica Neue"', 'sans-serif']
+    		},
     		borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
-    			sm: 'calc(var(--radius) - 4px)'
+    			sm: 'calc(var(--radius) - 4px)',
+    			wp: '3px',
+    			'wp-input': '4px'
     		},
     		colors: {
     			background: 'hsl(var(--background))',
@@ -53,6 +67,27 @@ module.exports = {
     				'3': 'hsl(var(--chart-3))',
     				'4': 'hsl(var(--chart-4))',
     				'5': 'hsl(var(--chart-5))'
+    			},
+    			// WordPress "Fresh" admin color scheme (verified against index.css).
+    			wp: {
+    				blue: '#2271b1',
+    				'blue-hover': '#135e96',
+    				'blue-active': '#0a4b78',
+    				chrome: '#1d2327',
+    				'chrome-2': '#2c3338',
+    				notice: '#d63638',
+    				success: '#00a32a',
+    				warning: '#dba617',
+    				info: '#72aee6',
+    				bg: '#f0f0f1',
+    				text: '#3c434a',
+    				'text-muted': '#646970',
+    				'text-subtle': '#50575e',
+    				'menu-text': '#c3c4c7',
+    				border: '#c3c4c7',
+    				'border-light': '#dcdcde',
+    				'border-input': '#8c8f94',
+    				icon: '#a7aaad'
     			}
     		}
     	}
