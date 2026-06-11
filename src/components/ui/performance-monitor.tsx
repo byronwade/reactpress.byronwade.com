@@ -79,9 +79,9 @@ export function PerformanceMonitor({ showInDev = true, position = "bottom-right"
 	}
 
 	const getScoreColor = (value: number, thresholds: { good: number; needs: number }) => {
-		if (value <= thresholds.good) return "text-green-500";
-		if (value <= thresholds.needs) return "text-yellow-500";
-		return "text-red-500";
+		if (value <= thresholds.good) return "tw-text-green-500";
+		if (value <= thresholds.needs) return "tw-text-yellow-500";
+		return "tw-text-red-500";
 	};
 
 	const formatValue = (value: number, unit: string = "ms") => {

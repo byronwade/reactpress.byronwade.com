@@ -6,15 +6,12 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}"],
-	// WordPress admin uses these as plain class names with different meanings than
-	// Tailwind's utilities, so Tailwind must NOT emit them (or it hijacks wp-admin
-	// markup): `fixed` = table-layout (Tailwind: position:fixed) — broke the list
-	// table; `sticky` = sticky posts (Tailwind: position:sticky); `inline` = a
-	// notice/quick-edit hook (Tailwind: display:inline); `columns-N` = dashboard
-	// grid (Tailwind: CSS columns). `hidden` is intentionally NOT blocked
-	// (Tailwind .hidden == WP .hidden), nor are `flex`/`block`/`container` which
-	// the homepage and a few admin files use as real Tailwind utilities.
-	blocklist: ["fixed", "static", "table", "visible", "sticky", "inline", "columns-1", "columns-2", "columns-3", "columns-4"],
+	// All Tailwind utilities are prefixed `tw-` so they can NEVER collide with
+	// WordPress admin class names (fixed=table-layout, sticky=sticky posts,
+	// inline, columns-2, block, table, …). This makes adding Tailwind utilities
+	// to wp-admin markup safe. App/admin Tailwind usage must use the tw- prefix;
+	// modifiers go before it (e.g. hover:tw-bg-primary).
+	prefix: "tw-",
 	theme: {
     	extend: {
     		// WordPress admin (wp-admin) design tokens — "Fresh" scheme, WP 6.1.x.

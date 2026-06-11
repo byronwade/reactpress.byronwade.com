@@ -5,7 +5,7 @@ import { addClassOnHover, removeClassOnHover } from "../../../utils/helper";
 export default function Toolbar() {
 	return (
 		<>
-			<div id="wpadminbar" className="nojq [direction:ltr] bg-wp-chrome text-wp-menu-text text-[13px] font-normal font-wp leading-[2.46153846] h-[32px] [position:fixed] top-0 left-0 w-full min-w-[600px] z-[99999]">
+			<div id="wpadminbar" className="nojq tw-[direction:ltr] tw-bg-wp-chrome tw-text-wp-menu-text tw-text-[13px] tw-font-normal tw-font-wp tw-leading-[2.46153846] tw-h-[32px] tw-fixed tw-top-0 tw-left-0 tw-w-full tw-min-w-[600px] tw-z-[99999]">
 				<div className="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
 					<ul id="wp-admin-bar-root-default" className="ab-top-menu">
 						<li id="wp-admin-bar-menu-toggle">
