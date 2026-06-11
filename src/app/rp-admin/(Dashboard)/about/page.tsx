@@ -21,16 +21,16 @@ function About() {
 					</div>
 					<div className="about__header-text" />
 					<nav className="about__header-navigation nav-tab-wrapper wp-clearfix" aria-label="Secondary menu">
-						<a href="/" className="nav-tab nav-tab-active" aria-current="page">
+						<a href="/rp-admin/about" className="nav-tab nav-tab-active" aria-current="page">
 							What&apos;s New
 						</a>
-						<a href="/" className="nav-tab">
+						<a href="/rp-admin/credits" className="nav-tab">
 							Credits
 						</a>
-						<a href="/" className="nav-tab">
+						<a href="/rp-admin/freedoms" className="nav-tab">
 							Freedoms
 						</a>
-						<a href="/" className="nav-tab">
+						<a href="/rp-admin/privacy" className="nav-tab">
 							Privacy
 						</a>
 					</nav>
