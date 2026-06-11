@@ -6777,12 +6777,9 @@ table.form-table td .updated p {
 .php-error #adminmenuwrap {
 	margin-top: 2em;
 }
-#adminmenu {
-	clear: left;
-	margin: 12px 0;
-	padding: 0;
-	list-style: none;
-}
+/* #adminmenu base converted to Tailwind on <ul id="adminmenu"> in sidebar.tsx
+   (clear-left my-[12px] mx-0 p-0 list-none). The .folded #adminmenu width
+   override stays more specific. */
 .folded #adminmenu,
 .folded #adminmenu li.menu-top,
 .folded #adminmenuback,
