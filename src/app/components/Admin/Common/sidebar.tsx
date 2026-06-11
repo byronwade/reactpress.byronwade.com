@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
 	const location = usePathname();
-	console.log(location);
 	return (
 		<>
 			<div id="adminmenumain" role="navigation" aria-label="Main menu">
@@ -13,7 +12,7 @@ export default function Sidebar() {
 				<div id="adminmenuwrap">
 					<ul id="adminmenu">
 						<li className={`wp-first-item wp-has-submenu ${location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu wp-menu-open" : "wp-not-current-submenu"} menu-top menu-top-first menu-icon-dashboard menu-top-last`} id="menu-dashboard">
-							<Link href="/rp-admin" className={location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu wp-has-current-submenu" : "wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-last"} aria-haspopup="true">
+							<Link href="/rp-admin" className={location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu" : "wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-last"} aria-haspopup="true">
 								<div className="wp-menu-arrow">
 									<div />
 								</div>
@@ -166,12 +165,12 @@ export default function Sidebar() {
 									Appearance
 								</li>
 								<li className="wp-first-item">
-									<a href="/rp-admin/themes" className="wp-first-item">
+									<Link href="/rp-admin/themes" className="wp-first-item">
 										Themes
 										<span className="update-plugins count-0">
 											<span className="theme-count">0</span>
 										</span>
-									</a>
+									</Link>
 								</li>
 								<li className="hide-if-no-customize">
 									<a href="/rp-admin" className="hide-if-no-customize">
@@ -187,7 +186,7 @@ export default function Sidebar() {
 							</ul>
 						</li>
 						<li className="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" id="menu-plugins">
-							<a href="/rp-admin/plugins" className="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" aria-haspopup="true">
+							<Link href="/rp-admin/plugins" className="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" aria-haspopup="true">
 								<div className="wp-menu-arrow">
 									<div />
 								</div>
@@ -200,7 +199,7 @@ export default function Sidebar() {
 										<span className="plugin-count">0</span>
 									</span>
 								</div>
-							</a>
+							</Link>
 							<ul className="wp-submenu wp-submenu-wrap">
 								<li className="wp-submenu-head" aria-hidden="true">
 									Plugins
@@ -209,9 +208,9 @@ export default function Sidebar() {
 									</span>
 								</li>
 								<li className="wp-first-item">
-									<a href="/rp-admin/plugins" className="wp-first-item">
+									<Link href="/rp-admin/plugins" className="wp-first-item">
 										Installed Plugins
-									</a>
+									</Link>
 								</li>
 								<li>
 									<a href="/rp-admin">Add New</a>
