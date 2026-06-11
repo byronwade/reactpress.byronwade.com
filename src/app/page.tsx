@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
-import { ArrowRight, Github, CheckCircle, Calendar } from "lucide-react";
+import { ArrowRight, Github, Heart, Calendar, CheckCircle } from "lucide-react";
 import Image from "next/image";
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
 			<header className="border-b border-border/40">
 				<div className="container flex justify-between items-center px-4 py-4 mx-auto max-w-4xl">
 					<div className="flex items-center space-x-3">
-						<Image src="/logo192.png" alt="ReactPress - WordPress Alternative Logo" width={32} height={32} className="w-8 h-8" priority />
+						<Image src="/logo192.png" alt="ReactPress logo" width={32} height={32} className="w-8 h-8" priority />
 						<span className="text-xl font-semibold">ReactPress</span>
 					</div>
 					<nav className="flex gap-4 items-center" role="navigation" aria-label="Main navigation">
@@ -19,7 +19,7 @@ export default function HomePage() {
 						</Link>
 						<Link href="/rp-admin">
 							<Button variant="outline" size="sm">
-								Admin Demo
+								Explore the admin
 							</Button>
 						</Link>
 					</nav>
@@ -30,56 +30,57 @@ export default function HomePage() {
 			<main className="container px-4 py-16 mx-auto max-w-4xl">
 				<article className="max-w-2xl">
 					<header>
-						<h1 className="mb-6 text-4xl font-bold tracking-tight">ReactPress - Modern WordPress Alternative</h1>
+						<p className="flex gap-2 items-center mb-4 text-sm font-medium text-muted-foreground">
+							<Heart className="w-4 h-4 text-red-500" aria-hidden="true" />
+							A passion project — for the fun of it
+						</p>
+						<h1 className="mb-6 text-4xl font-bold tracking-tight">Rebuilding the WordPress admin, pixel for pixel</h1>
 					</header>
 
 					<section className="space-y-6 text-lg leading-relaxed text-muted-foreground" aria-labelledby="about-reactpress">
 						<h2 id="about-reactpress" className="sr-only">
-							About ReactPress WordPress Alternative
+							About ReactPress
 						</h2>
 
 						<p>
-							<strong>WordPress reimagined with modern web technologies.</strong> Experience the familiar WordPress admin interface with 5x faster performance.
+							<strong className="text-foreground">ReactPress is my attempt to rebuild the WordPress admin panel from scratch</strong> with Next.js, React, and TypeScript — recreating it as faithfully as I can, right down to the pixel.
 						</p>
 
 						<p>
-							ReactPress is a complete <em>WordPress admin interface</em> rebuilt from the ground up using <strong>Next.js 15</strong>, <strong>React 18</strong>, and <strong>TypeScript</strong>. It maintains full compatibility with WordPress workflows while delivering significantly better performance and developer experience than traditional WordPress admin panels.
+							There&apos;s no grand master plan. It started as a fun challenge: take an interface millions of people know by heart, recreate it honestly in a modern stack, and then <em>slowly</em> modernize the styling underneath — converting the original CSS to Tailwind bit by bit — without changing a single pixel of how it looks.
 						</p>
 
 						<p>
-							This open-source <strong>WordPress alternative</strong> demonstrates how familiar WordPress workflows can be modernized without sacrificing functionality. Every page, component, and interaction has been carefully recreated with modern best practices, making it the perfect solution for developers building
-							<em>headless WordPress</em> solutions, <em>WordPress alternatives</em>, and modern CMS interfaces.
+							It&apos;s an ongoing experiment and a bit of a love letter to a UI I&apos;ve spent way too many hours in. Click around the admin, read the source, file an issue if something looks off. That&apos;s the whole point.
 						</p>
 					</section>
 
 					<section className="mt-12 space-y-4" aria-labelledby="get-started">
 						<h2 id="get-started" className="sr-only">
-							Get Started with ReactPress
+							Take a look
 						</h2>
-						<div className="flex gap-4 items-center">
+						<div className="flex flex-wrap gap-4 items-center">
 							<Link href="/rp-admin">
 								<Button className="h-11">
-									View Admin Demo
+									Explore the admin
 									<ArrowRight className="ml-2 w-4 h-4" />
 								</Button>
 							</Link>
 							<Link href="https://github.com/byronwade/ReactPress" target="_blank" rel="noopener noreferrer">
 								<Button variant="outline" className="h-11">
 									<Github className="mr-2 w-4 h-4" />
-									Source Code
+									Source code
 								</Button>
 							</Link>
 						</div>
 
-						<p className="text-sm text-muted-foreground">
-							Currently in development • Built with Next.js 15 • <strong>5x faster than WordPress</strong>
-						</p>
+						<p className="text-sm text-muted-foreground">An ongoing experiment • Next.js · React · TypeScript • Built for fun</p>
 					</section>
 
-					{/* Changelog Section */}
-					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="changelog">
-						<h2 id="changelog" className="mb-6 text-xl font-semibold">
-							Recent Updates
+					{/* Project log */}
+					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="project-log">
+						<h2 id="project-log" className="mb-6 text-xl font-semibold">
+							Project log
 						</h2>
 						<div className="space-y-6">
 							<article className="flex gap-4">
@@ -88,23 +89,23 @@ export default function HomePage() {
 								</div>
 								<div>
 									<header className="flex gap-2 items-center mb-1">
-										<time dateTime="2024-12" className="text-sm font-medium">
-											December 2024
+										<time dateTime="2026" className="text-sm font-medium">
+											2026 — now
 										</time>
-										<span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">v1.2.0</span>
+										<span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">cleanup</span>
 									</header>
 									<ul className="space-y-1 text-sm text-muted-foreground">
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Enhanced SEO optimization with comprehensive meta tags and structured data</span>
+											<span>Documented the WordPress admin design system so the rebuild stays honest</span>
 										</li>
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Improved WordPress admin bar logo styling with proper inversion</span>
+											<span>Started methodically converting the original admin CSS to Tailwind, pixel for pixel</span>
 										</li>
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Updated project documentation and comprehensive README</span>
+											<span>Tidying up the codebase and chasing down little bits of drift</span>
 										</li>
 									</ul>
 								</div>
@@ -117,22 +118,22 @@ export default function HomePage() {
 								<div>
 									<header className="flex gap-2 items-center mb-1">
 										<time dateTime="2024-11" className="text-sm font-medium">
-											November 2024
+											Late 2024
 										</time>
-										<span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">v1.1.0</span>
+										<span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">v1.1</span>
 									</header>
 									<ul className="space-y-1 text-sm text-muted-foreground">
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Complete WordPress admin interface recreation with pixel-perfect accuracy</span>
+											<span>Faithful recreation of the WordPress admin screens and navigation</span>
 										</li>
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Added responsive design for mobile and tablet devices</span>
+											<span>Wired up the Dashicons font for authentic WordPress iconography</span>
 										</li>
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Integrated Dashicons font for authentic WordPress iconography</span>
+											<span>Responsive behavior for smaller screens</span>
 										</li>
 									</ul>
 								</div>
@@ -145,22 +146,18 @@ export default function HomePage() {
 								<div>
 									<header className="flex gap-2 items-center mb-1">
 										<time dateTime="2024-10" className="text-sm font-medium">
-											October 2024
+											Where it began
 										</time>
-										<span className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded">v1.0.0</span>
+										<span className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded">v1.0</span>
 									</header>
 									<ul className="space-y-1 text-sm text-muted-foreground">
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Initial release with Next.js 15 and React 18 foundation</span>
+											<span>First commit: a Next.js + React + TypeScript foundation</span>
 										</li>
 										<li className="flex gap-2 items-start">
 											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>Basic WordPress admin layout and navigation structure</span>
-										</li>
-										<li className="flex gap-2 items-start">
-											<CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-											<span>TypeScript configuration and Tailwind CSS integration</span>
+											<span>The basic admin layout and navigation skeleton</span>
 										</li>
 									</ul>
 								</div>
@@ -168,80 +165,65 @@ export default function HomePage() {
 						</div>
 					</section>
 
-					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="for-developers">
-						<h2 id="for-developers" className="mb-4 text-xl font-semibold">
-							For WordPress Developers
+					{/* Under the hood */}
+					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="under-the-hood">
+						<h2 id="under-the-hood" className="mb-4 text-xl font-semibold">
+							Under the hood
 						</h2>
 						<div className="space-y-4 text-muted-foreground">
-							<p>
-								ReactPress serves as a reference implementation for building complex <strong>WordPress admin interfaces</strong> with modern React patterns. Perfect for developers transitioning from traditional WordPress to <em>headless WordPress</em> architectures.
-							</p>
-							<p>The codebase includes examples of:</p>
+							<p>If you&apos;re curious how it&apos;s put together, the codebase is a decent tour of a few things I enjoy:</p>
 							<ul className="pl-6 space-y-1 list-disc">
 								<li>
-									<strong>Server-side rendering</strong> with Next.js 15 App Router
+									The Next.js <strong>App Router</strong> with React Server Components
 								</li>
 								<li>
-									<strong>Component composition</strong> and reusability patterns
+									Recreating a real, complex UI from <strong>component composition</strong>
 								</li>
 								<li>
-									<strong>WordPress-compatible design</strong> patterns and UI components
+									A careful, ongoing <strong>CSS → Tailwind</strong> migration that has to stay pixel-perfect
 								</li>
 								<li>
-									<strong>Modern CSS</strong> with Tailwind CSS utility classes
+									<strong>TypeScript</strong> throughout
 								</li>
-								<li>
-									<strong>TypeScript implementation</strong> for type-safe WordPress development
-								</li>
-								<li>
-									<strong>Responsive design</strong> optimized for all devices
-								</li>
+								<li>Wrangling ~18k lines of original WordPress admin CSS into something maintainable</li>
 							</ul>
-							<p>
-								All components are built with <em>accessibility</em>, <em>performance</em>, and <em>maintainability</em> in mind, making ReactPress the ideal starting point for your next WordPress alternative project.
-							</p>
+							<p>It&apos;s a sandbox as much as anything — a place to try ideas on an interface I already know inside and out.</p>
 						</div>
 					</section>
 
-					{/* SEO-focused FAQ section */}
-					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="wordpress-faq">
-						<h2 id="wordpress-faq" className="mb-6 text-xl font-semibold">
-							WordPress Alternative FAQ
+					{/* FAQ */}
+					<section className="pt-8 mt-16 border-t border-border/40" aria-labelledby="faq">
+						<h2 id="faq" className="mb-6 text-xl font-semibold">
+							A few honest answers
 						</h2>
 						<div className="space-y-6">
 							<details className="group">
 								<summary className="flex justify-between items-center text-base font-medium list-none cursor-pointer">
-									<span>Why choose ReactPress over WordPress admin?</span>
+									<span>Is this trying to replace WordPress?</span>
 									<span className="transition-transform group-open:rotate-180">▼</span>
 								</summary>
 								<div className="mt-3 text-sm text-muted-foreground">
-									<p>
-										ReactPress offers <strong>5x faster performance</strong> than traditional WordPress admin, modern TypeScript development experience, and familiar WordPress workflows without PHP dependencies. Perfect for headless WordPress setups and modern development teams.
-									</p>
+									<p>Nope. WordPress is great and powers a huge chunk of the web. This is a passion project built for fun and learning — not a product, not a pitch.</p>
 								</div>
 							</details>
 
 							<details className="group">
 								<summary className="flex justify-between items-center text-base font-medium list-none cursor-pointer">
-									<span>Is ReactPress compatible with WordPress?</span>
+									<span>Does it actually do anything?</span>
 									<span className="transition-transform group-open:rotate-180">▼</span>
 								</summary>
 								<div className="mt-3 text-sm text-muted-foreground">
-									<p>
-										Yes! ReactPress recreates the WordPress admin interface pixel-perfectly. It can connect to WordPress via REST API or GraphQL, making it ideal for <em>headless WordPress</em> implementations and WordPress alternatives.
-									</p>
+									<p>Right now it&apos;s a faithful front-end recreation — the screens, navigation, and styling of wp-admin. Think of it as a detailed sandbox rather than a working CMS.</p>
 								</div>
 							</details>
 
 							<details className="group">
 								<summary className="flex justify-between items-center text-base font-medium list-none cursor-pointer">
-									<span>What makes ReactPress the best WordPress alternative?</span>
+									<span>Why build this?</span>
 									<span className="transition-transform group-open:rotate-180">▼</span>
 								</summary>
 								<div className="mt-3 text-sm text-muted-foreground">
-									<p>
-										Built with <strong>Next.js 15</strong>, <strong>React 18</strong>, and <strong>TypeScript</strong>, ReactPress combines familiar WordPress UX with modern web performance. Open source, fully customizable, and optimized for developer productivity.
-									</p>
+									<p>Because faithfully rebuilding a familiar, battle-tested interface is a genuinely fun engineering puzzle — and a great excuse to dig into Next.js, React, and the wonderfully weird corners of WordPress&apos;s CSS.</p>
 								</div>
 							</details>
 						</div>
@@ -249,15 +231,15 @@ export default function HomePage() {
 				</article>
 			</main>
 
-			{/* Simple footer with enhanced schema markup */}
+			{/* Footer */}
 			<footer className="mt-24 border-t border-border/40" role="contentinfo">
 				<div className="container px-4 py-8 mx-auto max-w-4xl">
-					<div className="flex justify-between items-center text-sm text-muted-foreground">
+					<div className="flex flex-wrap gap-4 justify-between items-center text-sm text-muted-foreground">
 						<div className="flex gap-4 items-center">
-							<span>© 2024 ReactPress</span>
+							<span>© 2026 ReactPress</span>
 							<span>•</span>
 							<span>
-								Built by{" "}
+								Made by{" "}
 								<Link href="https://byronwade.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
 									Byron Wade
 								</Link>
@@ -276,7 +258,7 @@ export default function HomePage() {
 						</div>
 					</div>
 					<div className="mt-4 text-xs text-center text-muted-foreground">
-						<p>ReactPress - The fastest WordPress alternative built with Next.js 15. Open source WordPress admin interface for modern developers.</p>
+						<p>A for-fun rebuild of the WordPress admin, made with Next.js and a lot of coffee.</p>
 					</div>
 				</div>
 			</footer>
