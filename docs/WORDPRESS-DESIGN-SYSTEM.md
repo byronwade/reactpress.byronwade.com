@@ -265,6 +265,24 @@ rule:
    `min-width:600px`, breakpoints `782/960/600`. **Rule:** use exact arbitrary
    values and WP breakpoints — never Tailwind's rounded tokens/screens.
 
+6. **⚠️ Tailwind utility / WordPress class-name collisions (this bit hard).**
+   WordPress reuses words that are *also* Tailwind utilities, as plain class
+   names with different meanings: `fixed` (table-layout, NOT `position:fixed`),
+   `sticky` (sticky posts, NOT `position:sticky`), `inline` (a notice/quick-edit
+   hook, NOT `display:inline`), `columns-2/3/4` (dashboard grid, NOT CSS
+   columns), `block`, `table`, `static`, `visible`, `container`. Tailwind's JIT
+   scanner sees these words in the admin JSX and **emits the utility, which then
+   lands on the WordPress element** — e.g. `.fixed{position:fixed}` turned the
+   list table into an out-of-flow, 100vw element that ran off-screen.
+   **Mitigation in place:** a `blocklist` in `tailwind.config.js` stops Tailwind
+   emitting the harmful colliding utilities the app doesn't otherwise use
+   (`fixed`, `sticky`, `inline`, `visible`, `static`, `table`, `columns-1..4`).
+   **The complete fix** (required before converting admin chrome to Tailwind
+   utilities) is to give Tailwind a `prefix` (e.g. `tw-`) so no Tailwind utility
+   can ever share a name with a WordPress class — then update the app's own
+   Tailwind usage to the prefix. Until then, do not add Tailwind utilities to
+   elements that also carry WordPress class names matching a utility.
+
 ### Layering rule — what to keep vs. convert
 
 | Layer | Examples | Action |
