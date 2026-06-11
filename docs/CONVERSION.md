@@ -10,10 +10,14 @@ risk analysis. This document is the step-by-step process and the running queue.
 
 ### Prerequisites before converting any CSS (do these first)
 
-1. **Fix html/body class placement.** Move the WordPress body classes onto the
-   real `<body>` and `wp-toolbar` onto `<html>` (scoped to admin routes), and
-   restore `#wpwrap`. Until this is done, layout/offset rules don't match — this
-   is the root cause of the admin-bar/list-table styling looking off.
+1. **Body-class hooks (narrow — NOT a structural move).** `index.css` is already
+   adapted to the wrapper-div layout (the admin-bar offset is
+   `.wp-toolbar{padding-top:32px}`, a class), so **do not** move the classes onto
+   the real `<html>`/`<body>` — that doubles the offset (→64px) and regresses the
+   layout. The only gap is ~45 `body.<class>` rules (`body.columns-2`,
+   `body.post-new-php`, modal `body.modal-open`); add those specific classes to
+   the real `<body>` per screen via a small client effect, plus `#wpwrap` where
+   modal rules need it. See WORDPRESS-DESIGN-SYSTEM.md §1.
 2. ✅ **WP design tokens added to `tailwind.config.js`** (`theme.extend`): the
    Fresh palette under `colors.wp.*` (`bg-wp-blue`, `text-wp-text`,
    `border-wp-border-input`, …), `screens` `wp-sm:600px`/`wp-md:782px`/

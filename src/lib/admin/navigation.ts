@@ -10,9 +10,9 @@ import type { AdminMenuItem } from "./types";
  * sidebar is converted to render from this array, the output DOM must stay
  * 1-for-1 with WordPress — see `AGENTS.md` and `docs/CONVERSION.md`.
  *
- * NOTE: Appearance currently has no real routes wired (Customize / Menus /
- * Theme File Editor are placeholder stubs in the live sidebar); those are
- * intentionally omitted here until their pages exist.
+ * NOTE: Appearance and Plugins point at the real routes that exist in this repo
+ * (themes, nav-menus, theme-editor, plugins, plugin-install, plugin-editor).
+ * "Customize" has no dedicated route yet, so it points at /rp-admin as a stub.
  */
 export const ADMIN_MENU: AdminMenuItem[] = [
 	{
@@ -75,11 +75,37 @@ export const ADMIN_MENU: AdminMenuItem[] = [
 		badge: { wrapperClassName: "awaiting-mod count-0", countClassName: "pending-count", count: 0 },
 	},
 	{
+		id: "menu-appearance",
+		label: "Appearance",
+		href: "/rp-admin/themes",
+		dashicon: "dashicons-admin-appearance",
+		separatorBefore: true,
+		matchPaths: ["/rp-admin/themes", "/rp-admin/nav-menus", "/rp-admin/theme-editor"],
+		submenu: [
+			{ label: "Themes", href: "/rp-admin/themes", badge: { wrapperClassName: "update-plugins count-0", countClassName: "theme-count", count: 0 } },
+			{ label: "Customize", href: "/rp-admin" },
+			{ label: "Menus", href: "/rp-admin/nav-menus" },
+			{ label: "Theme File Editor", href: "/rp-admin/theme-editor" },
+		],
+	},
+	{
+		id: "menu-plugins",
+		label: "Plugins",
+		href: "/rp-admin/plugins",
+		dashicon: "dashicons-admin-plugins",
+		matchPaths: ["/rp-admin/plugins", "/rp-admin/plugin-install", "/rp-admin/plugin-editor"],
+		badge: { wrapperClassName: "update-plugins count-0", countClassName: "plugin-count", count: 0 },
+		submenu: [
+			{ label: "Installed Plugins", href: "/rp-admin/plugins" },
+			{ label: "Add New", href: "/rp-admin/plugin-install" },
+			{ label: "Plugin File Editor", href: "/rp-admin/plugin-editor" },
+		],
+	},
+	{
 		id: "menu-users",
 		label: "Users",
 		href: "/rp-admin/users",
 		dashicon: "dashicons-admin-users",
-		separatorBefore: true,
 		matchPaths: ["/rp-admin/users", "/rp-admin/user-new", "/rp-admin/profile"],
 		submenu: [
 			{ label: "All Users", href: "/rp-admin/users" },
