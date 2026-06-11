@@ -6,6 +6,12 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}"],
+	// WordPress admin uses these as plain class names with different meanings
+	// (e.g. `fixed` = table-layout:fixed, `columns-2` = dashboard grid). Tailwind
+	// would otherwise generate utilities (.fixed{position:fixed} etc.) that hijack
+	// the wp-admin markup and break list-table/layout positioning. The app itself
+	// does not use these utilities, so we block Tailwind from emitting them.
+	blocklist: ["fixed", "static", "block", "table", "visible", "columns-1", "columns-2", "columns-3", "columns-4"],
 	theme: {
     	extend: {
     		// WordPress admin (wp-admin) design tokens — "Fresh" scheme, WP 6.1.x.
