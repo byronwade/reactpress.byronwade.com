@@ -1149,22 +1149,12 @@ html:lang(he-il) .rtl #wpadminbar * {
 #wpadminbar a:focus {
 	outline-offset: -1px;
 }
-#wpadminbar {
-	direction: ltr;
-	color: #c3c4c7;
-	font-size: 13px;
-	font-weight: 400;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	line-height: 2.46153846;
-	height: 32px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	min-width: 600px;
-	z-index: 99999;
-	background: #1d2327;
-}
+/* #wpadminbar base container styles converted to Tailwind on
+   <div id="wpadminbar"> in components/Admin/Common/toolbar.tsx.
+   position:fixed uses the arbitrary [position:fixed] utility because the bare
+   `fixed` Tailwind utility is blocklisted (collides with WordPress's
+   table-layout `.fixed`). The responsive `html #wpadminbar{height:46px}` rule
+   below (≤782px) is more specific and still overrides at mobile. */
 #wpadminbar .ab-sub-wrapper,
 #wpadminbar ul,
 #wpadminbar ul li {
