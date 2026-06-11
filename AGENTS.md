@@ -110,12 +110,16 @@ CSS→Tailwind risk analysis. **Read it before converting any CSS.** The essenti
 - The DOM skeleton is load-bearing: `html.wp-toolbar` → `body.wp-admin…` →
   `#wpwrap` → `#adminmenumain`/`#adminmenu` (160px) + `#wpcontent`
   (`margin-left:160px`) → `#wpadminbar` (fixed, 32px) + `#wpbody` → `.wrap`.
-- WordPress's CSS is keyed to its classes living on the **real `<html>`/`<body>`**
-  (e.g. `html.wp-toolbar{padding-top:32px}`, `.folded #wpcontent{margin-left:36px}`).
-  ⚠️ This repo currently puts those classes on wrapper `<div>`s and ships a bare
-  `<html>`/`<body>` — which is why the admin-bar/table **layout** looks off even
-  though colors are right. Fix: move the body classes to the real `<body>` and
-  `wp-toolbar` to `<html>`, scoped to admin routes; restore `#wpwrap`.
+- This repo puts the WordPress classes on **wrapper `<div>`s** (not the real
+  `<html>`/`<body>`), and `index.css` has been **adapted to match** — e.g. the
+  admin-bar offset is `.wp-toolbar{padding-top:32px}` (a class, not
+  `html.wp-toolbar`), and state classes (`auto-fold`/`folded`/`sticky-menu`) sit
+  on the ancestor div so descendant rules still match. ⚠️ **Do not move these
+  classes onto the real `<html>`/`<body>`** — it would apply `.wp-toolbar`'s
+  offset twice (64px) and regress the layout. The only real gap is ~45
+  `body.<class>` rules (`body.columns-2`, `body.post-new-php`, modal
+  `body.modal-open`) that need the class on the real `<body>`; add those
+  per-screen via a client effect, plus `#wpwrap` where modal rules need it.
 - **Breakpoints are WordPress's, not Tailwind's:** `782px` (mobile / 46px bar),
   `960px` (`auto-fold` menu), `600px`. Never use Tailwind's `sm/md/lg` for
   admin responsive behavior — use `max-[782px]:` etc. or override `screens`.

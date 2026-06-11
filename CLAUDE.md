@@ -75,13 +75,16 @@ gotchas that bite immediately:
   competing `index.css` rule — so convert + delete in the same change. Only
   **leaf** visuals are safe to Tailwind-ize; the structural shell, dashicons,
   and color-scheme layer stay as authored CSS.
-- **html/body class placement.** WordPress CSS expects `wp-toolbar` on `<html>`
-  and `wp-admin …` on `<body>` (e.g. `html.wp-toolbar{padding-top:32px}`,
-  `.folded #wpcontent{…}`). This repo's root `layout.tsx` ships a **bare**
-  `<html>`/`<body>` and puts those classes on wrapper `<div>`s instead — so
-  layout/offset rules (admin-bar spacing, list-table chrome) don't match even
-  though colors do. Fixing this (classes on the real `<html>`/`<body>`, scoped
-  to admin; restore `#wpwrap`) is a prerequisite for converting layout CSS.
+- **html/body class placement.** The WordPress classes sit on **wrapper `<div>`s**,
+  not the real `<html>`/`<body>`, and `index.css` has been adapted to suit —
+  e.g. the admin-bar offset is `.wp-toolbar{padding-top:32px}` (a class), and
+  state classes (`auto-fold`/`folded`/`sticky-menu`) ride the ancestor div so
+  descendant rules match. **Do not move these onto the real `<html>`/`<body>`** —
+  that doubles the `.wp-toolbar` offset (→64px) and regresses the layout. The
+  real gap is ~45 `body.<class>` rules (`body.columns-2` 2-col dashboard,
+  `body.post-new-php`, modal `body.modal-open`) that need the class on the bare
+  real `<body>`; add those per-screen via a client effect, plus `#wpwrap` where
+  modal/responsive rules need it.
 - **Breakpoints are WordPress's, not Tailwind's:** `782/960/600px`. Don't use
   `sm/md/lg` for admin responsive behavior.
 

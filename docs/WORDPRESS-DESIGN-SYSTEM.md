@@ -43,7 +43,7 @@ html.wp-toolbar
 These only work when the classes sit on the **real `<html>`/`<body>`** and the
 nesting matches.
 
-### ⚠️ Current deviation in this repo (the toolbar/table "CSS not working" cause)
+### Current structure in this repo (and what is / isn't a problem)
 
 `src/app/layout.tsx` renders a **bare** `<html lang="en">` and `<body>`, and
 `src/app/rp-admin/layout.tsx` puts the WordPress classes on **wrapper `<div>`s**
@@ -55,18 +55,29 @@ instead:
     …#wpcontent … #wpadminbar … #wpbody …
 ```
 
-Consequences:
-- Rules keyed to `html.wp-toolbar` (the **32px top offset** for the fixed admin
-  bar) and `body.…` never match → admin-bar/content spacing is off.
-- `#wpwrap` is absent, so any `#wpwrap`-scoped rule is dead.
-- Color/font/background rules that use bare element or class selectors *do*
-  apply, which is why colors look right but **layout/offset** looks broken.
+**`index.css` has already been adapted to this div structure**, so most of it
+works as-is. Verified:
+- The admin-bar offset was rewritten from WordPress's `html.wp-toolbar { padding-top:32px }`
+  to **`.wp-toolbar { padding-top:32px }`** (a class selector, ~line 3583) — it
+  matches the wrapper div, so the 32px offset works.
+- There are **zero `html.<class>` selectors** left in `index.css`. The state
+  classes (`auto-fold`, `sticky-menu`, `admin-bar`, `folded`, …) sit on the
+  wrapper div, which is an ancestor of `#adminmenu`/`#wpcontent`/`#wpbody`, so
+  descendant rules like `.folded #adminmenuwrap` still match.
 
-**Fix direction (parity-correct):** put the WordPress body classes on the real
-`<body>` and `wp-toolbar` on the real `<html>`, **scoped to admin routes only**
-(e.g. a small client effect that adds/removes the classes on mount, or an
-admin-only route-group root layout) so the public site is unaffected. Restore
-`#wpwrap`. Do this **before** converting layout CSS to Tailwind.
+> ⚠️ **Do NOT naively move the WordPress classes onto the real `<html>`/`<body>`.**
+> Because the offset is a *class* rule (`.wp-toolbar`), adding `wp-toolbar` to
+> `<html>` as well would apply `padding-top:32px` **twice** (html + div = 64px) —
+> a regression. The structure is intentionally div-based.
+
+**The genuine remaining gap:** ~45 `body.<class>` rules that need the class on
+the real `<body>` element (it's bare), e.g. `body.columns-2 #postbox-container-1`
+(dashboard/edit 2-column layout), `body.post-new-php`, `body.user-new-php`, and
+the media modal's `body.modal-open` / `body.iframe`. `#wpwrap` is also absent
+(10 `#wpwrap` rules, mostly modal/responsive). **Fix direction (narrow, per
+screen):** add only the specific `body.<class>` hooks the screen needs to the
+real `<body>` (via a small client effect), and add `#wpwrap` where modal/
+responsive rules require it — *without* duplicating the `.wp-toolbar` offset.
 
 ---
 
