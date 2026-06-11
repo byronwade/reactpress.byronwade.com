@@ -7,9 +7,11 @@ const nextConfig = {
 	poweredByHeader: false,
 	generateEtags: true,
 
-	// Simplified experimental features
+	// experimental.optimizeCss (critters) post-processes the large WordPress
+	// admin stylesheet and is a known cause of "CSS present but not applied" in
+	// production builds. Disabled so index.css loads normally via <link>.
 	experimental: {
-		optimizeCss: true,
+		optimizeCss: false,
 	},
 
 	// Enhanced image optimization for SEO and performance
