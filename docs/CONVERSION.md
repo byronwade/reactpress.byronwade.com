@@ -74,9 +74,9 @@ For each section above:
 
 ## Known cleanup backlog (not yet done)
 
-- **Dead files**: `src/app/utils/provider.js` (imports `swr`/`recoil`, neither
-  installed) and `src/app/utils/setup.js` (DB seed script) are imported nowhere
-  and look abandoned. Recommend deleting — left in place pending owner sign-off.
+- **Dead files**: ~~`src/app/utils/provider.js` / `setup.js`~~ removed — both
+  were imported nowhere (provider referenced uninstalled `swr`/`recoil`; setup
+  was an abandoned DB seed script).
 - **Placeholder links**: several sidebar items (Appearance → Customize / Menus /
   Theme File Editor; Plugins → Add New / Plugin File Editor) point to `/rp-admin`
   stubs. Wire to real routes when those pages are built.
