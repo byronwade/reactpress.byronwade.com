@@ -99,7 +99,47 @@ utilities take over, until the section file can be deleted entirely.
 
 ---
 
-## 3. Code Quality Bar
+## 3. WordPress Design System — Invariants & Conversion Risk
+
+`docs/WORDPRESS-DESIGN-SYSTEM.md` is the full, source-verified spec of the
+`wp-admin` design system (Fresh scheme, WP 6.1.x): the DOM skeleton, exact
+metrics, color tokens, typography, component specs, state classes, and the
+CSS→Tailwind risk analysis. **Read it before converting any CSS.** The essentials:
+
+**Structural invariants (must be preserved exactly):**
+- The DOM skeleton is load-bearing: `html.wp-toolbar` → `body.wp-admin…` →
+  `#wpwrap` → `#adminmenumain`/`#adminmenu` (160px) + `#wpcontent`
+  (`margin-left:160px`) → `#wpadminbar` (fixed, 32px) + `#wpbody` → `.wrap`.
+- WordPress's CSS is keyed to its classes living on the **real `<html>`/`<body>`**
+  (e.g. `html.wp-toolbar{padding-top:32px}`, `.folded #wpcontent{margin-left:36px}`).
+  ⚠️ This repo currently puts those classes on wrapper `<div>`s and ships a bare
+  `<html>`/`<body>` — which is why the admin-bar/table **layout** looks off even
+  though colors are right. Fix: move the body classes to the real `<body>` and
+  `wp-toolbar` to `<html>`, scoped to admin routes; restore `#wpwrap`.
+- **Breakpoints are WordPress's, not Tailwind's:** `782px` (mobile / 46px bar),
+  `960px` (`auto-fold` menu), `600px`. Never use Tailwind's `sm/md/lg` for
+  admin responsive behavior — use `max-[782px]:` etc. or override `screens`.
+- **Tokens (Fresh):** blue `#2271b1` (hover `#135e96`), chrome `#1d2327`/`#2c3338`,
+  destructive `#d63638`, app bg `#f0f0f1`, text `#3c434a`, borders
+  `#c3c4c7`/`#dcdcde`/`#8c8f94`, focus ring `0 0 0 1px #2271b1`, button radius
+  `3px`, input radius `4px`, system font stack.
+
+**Why conversion breaks CSS (and the rules):**
+- **ID specificity:** `#adminmenu`/`#wpadminbar` (`1,0,0`) beat Tailwind classes
+  (`0,1,0`); a leftover ID rule silently overrides your utility. → Convert a
+  selector and delete its `index.css` rule **in the same change**.
+- **Stateful descendant rules** (`.folded #wpcontent`, `.wp-menu-open .wp-submenu`,
+  `.hover .ab-sub-wrapper`) need `group`/`data-[state]:` variants, not utilities
+  on the child.
+- **Structural shell, dashicons, color-scheme layer:** keep as authored CSS — do
+  **not** Tailwind-ize. Only **leaf visuals** (a button, badge, notice, table
+  cell, form field, `.wrap` typography) are safe to convert.
+- **Prep first:** fix the html/body class placement, then extend
+  `tailwind.config.js` with the WP tokens + breakpoints, *then* convert leaves.
+
+---
+
+## 4. Code Quality Bar
 
 - **HTML/JSX structure must be clean and advanced.** Semantic, correctly
   nested, accessible where WordPress is, no redundant wrapper soup beyond what
@@ -119,7 +159,7 @@ utilities take over, until the section file can be deleted entirely.
 
 ---
 
-## 4. Tech Stack
+## 5. Tech Stack
 
 | Area | Choice |
 |------|--------|
@@ -135,7 +175,7 @@ utilities take over, until the section file can be deleted entirely.
 
 ---
 
-## 5. Project Structure
+## 6. Project Structure
 
 ```
 src/
@@ -163,7 +203,7 @@ Reference docs: `README.md` (project overview + CSS architecture + roadmap),
 
 ---
 
-## 6. Commands
+## 7. Commands
 
 ```bash
 bun install            # install deps (Bun is the primary package manager)
@@ -182,7 +222,7 @@ Before committing, ensure **`bun run lint`**, **`bun run type-check`**, and
 
 ---
 
-## 7. Definition of Done (checklist)
+## 8. Definition of Done (checklist)
 
 For any change touching the admin UI or CSS:
 
@@ -197,7 +237,7 @@ For any change touching the admin UI or CSS:
 
 ---
 
-## 8. Git / Workflow
+## 9. Git / Workflow
 
 - Develop on the assigned feature branch; commit with clear, descriptive
   messages; push with `git push -u origin <branch>`.
@@ -207,17 +247,20 @@ For any change touching the admin UI or CSS:
 
 ---
 
-## 9. Quick "do / don't"
+## 10. Quick "do / don't"
 
 **Do**
 - Replicate WordPress exactly, down to the pixel.
-- Convert CSS → Tailwind in small, accurate, clean slices.
+- Convert CSS → Tailwind in small, accurate, clean slices (leaf visuals only).
 - Use arbitrary values to hit exact WordPress measurements.
 - Keep WordPress classes/IDs alongside Tailwind utilities.
+- Use WordPress's breakpoints (`782/960/600px`) for admin responsive behavior.
 
 **Don't**
 - Redesign, "improve", or add features to the replicated admin UI.
 - Round measurements to the nearest Tailwind token.
-- Leave the same styling defined in both `index.css` and Tailwind.
+- Leave the same styling defined in both `index.css` and Tailwind (specificity!).
+- Tailwind-ize the structural shell, dashicons, or the color-scheme layer.
+- Use Tailwind's default `sm/md/lg` breakpoints for the admin layout.
 - Swap dashicons for another icon set in the replicated chrome.
 - Do a big-bang rewrite of `index.css`.

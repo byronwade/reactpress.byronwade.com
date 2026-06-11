@@ -3,8 +3,23 @@
 How we methodically clean up `rp-admin` and migrate the monolithic WordPress CSS
 to React + Tailwind **without breaking the 1-for-1 WordPress layout**.
 
-Read `AGENTS.md` first — it is the parity contract. This document is the
-step-by-step process and the running queue of work.
+Read `AGENTS.md` first — it is the parity contract — and
+`docs/WORDPRESS-DESIGN-SYSTEM.md` for the source-verified spec of what must be
+preserved (DOM skeleton, metrics, tokens, breakpoints) and the full conversion-
+risk analysis. This document is the step-by-step process and the running queue.
+
+### Prerequisites before converting any CSS (do these first)
+
+1. **Fix html/body class placement.** Move the WordPress body classes onto the
+   real `<body>` and `wp-toolbar` onto `<html>` (scoped to admin routes), and
+   restore `#wpwrap`. Until this is done, layout/offset rules don't match — this
+   is the root cause of the admin-bar/list-table styling looking off.
+2. **Add WP design tokens to `tailwind.config.js`:** the Fresh color palette
+   (named), `screens` = `{ 'wp-sm':'600px','wp-md':'782px','wp-fold':'960px' }`,
+   the system font stack, `borderRadius` `wp:3px`/`wp-input:4px`. Then converted
+   utilities use real WordPress values instead of Tailwind defaults.
+3. Only then convert **leaf** components, smallest-first (table below). The
+   structural shell, dashicons, and color-scheme layer stay as authored CSS.
 
 ## Golden rules (non-negotiable)
 

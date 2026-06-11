@@ -64,6 +64,27 @@ alongside them — use arbitrary values (`w-[160px]`, `bg-[#2271b1]`) to hit exa
 WordPress measurements, and delete the migrated rules from `index.css` so styles
 aren't defined twice.
 
+**Before converting any CSS, read `docs/WORDPRESS-DESIGN-SYSTEM.md`** — the
+source-verified spec of the design system (DOM skeleton, metrics, Fresh-scheme
+tokens, component specs, breakpoints) and the conversion-risk analysis. Two
+gotchas that bite immediately:
+
+- **ID-selector specificity.** WordPress styles `#adminmenu`/`#wpadminbar`/
+  `#wpcontent` with ID selectors (`1,0,0`) that *beat* Tailwind utility classes
+  (`0,1,0`). A converted utility silently does nothing until you delete the
+  competing `index.css` rule — so convert + delete in the same change. Only
+  **leaf** visuals are safe to Tailwind-ize; the structural shell, dashicons,
+  and color-scheme layer stay as authored CSS.
+- **html/body class placement.** WordPress CSS expects `wp-toolbar` on `<html>`
+  and `wp-admin …` on `<body>` (e.g. `html.wp-toolbar{padding-top:32px}`,
+  `.folded #wpcontent{…}`). This repo's root `layout.tsx` ships a **bare**
+  `<html>`/`<body>` and puts those classes on wrapper `<div>`s instead — so
+  layout/offset rules (admin-bar spacing, list-table chrome) don't match even
+  though colors do. Fixing this (classes on the real `<html>`/`<body>`, scoped
+  to admin; restore `#wpwrap`) is a prerequisite for converting layout CSS.
+- **Breakpoints are WordPress's, not Tailwind's:** `782/960/600px`. Don't use
+  `sm/md/lg` for admin responsive behavior.
+
 ### Admin shell
 
 `src/app/rp-admin/layout.tsx` is the admin shell. It pins WordPress's body
