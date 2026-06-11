@@ -9,7 +9,7 @@ export default function Sidebar() {
 		<>
 			<div id="adminmenumain" role="navigation" aria-label="Main menu">
 				<div id="adminmenuback" />
-				<div id="adminmenuwrap">
+				<div id="adminmenuwrap" className="w-[160px] bg-wp-chrome relative float-left z-[9990]">
 					<ul id="adminmenu">
 						<li className={`wp-first-item wp-has-submenu ${location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu wp-menu-open" : "wp-not-current-submenu"} menu-top menu-top-first menu-icon-dashboard menu-top-last`} id="menu-dashboard">
 							<Link href="/rp-admin" className={location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu" : "wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-last"} aria-haspopup="true">

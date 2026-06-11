@@ -6760,8 +6760,7 @@ table.form-table td .updated p {
 /*! This file is auto-generated */
 #adminmenu,
 #adminmenu .wp-submenu,
-#adminmenuback,
-#adminmenuwrap {
+#adminmenuback {
 	width: 160px;
 	background-color: #1d2327;
 }
@@ -6805,11 +6804,10 @@ table.form-table td .updated p {
 .menu-icon-users div.wp-menu-image {
 	background-image: none !important;
 }
-#adminmenuwrap {
-	position: relative;
-	float: left;
-	z-index: 9990;
-}
+/* #adminmenuwrap base (width/bg + position/float/z-index) converted to Tailwind
+   on <div id="adminmenuwrap"> in components/Admin/Common/sidebar.tsx. The
+   .folded/.sticky-menu/.auto-fold #adminmenuwrap overrides below are more
+   specific and still apply (collapsed width, fixed positioning, responsive). */
 #adminmenu * {
 	-webkit-user-select: none;
 	user-select: none;
