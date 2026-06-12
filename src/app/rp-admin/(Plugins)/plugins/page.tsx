@@ -1,5 +1,18 @@
 import React from "react";
-export default function Plugins() {
+import { getDb } from "@/lib/fakebase/client";
+import { items } from "@/lib/fakebase/format";
+import type { PluginRow } from "@/lib/fakebase/schema";
+
+export default async function Plugins() {
+	const db = await getDb();
+	const { data } = await db.from("plugins").select("*").order("name", { ascending: true });
+	const plugins: PluginRow[] = data ?? [];
+
+	const total = plugins.length;
+	const active = plugins.filter((p) => p.active).length;
+	const inactive = total - active;
+	const updates = plugins.filter((p) => p.update_available).length;
+
 	return (
 		<>
 			<div id="wpbody-content">
@@ -55,9 +68,7 @@ export default function Plugins() {
 								</div>
 								<div id="tab-panel-compatibility-problems" className="help-tab-content">
 									<p>Most of the time, plugins play nicely with the core of ReactPress and with other plugins. Sometimes, though, a plugin&apos;s code will get in the way of another plugin, causing compatibility issues. If your site starts doing strange things, this may be the problem. Try deactivating all your plugins and re-activating them in various combinations until you isolate which one(s) caused the issue.</p>
-									<p>
-										If something goes wrong with a plugin and you cannot use ReactPress, delete or rename that file in the <code>/home/customer/www/byronw34.sg-host.com/public_html/wp-content/plugins</code> directory and it will be automatically deactivated.
-									</p>
+									<p>If something goes wrong with a plugin and you cannot use ReactPress, delete or rename that plugin&apos;s folder in the plugins directory and it will be automatically deactivated.</p>
 								</div>
 								<div id="tab-panel-plugins-themes-auto-updates" className="help-tab-content">
 									<p>Auto-updates can be enabled or disabled for each individual plugin. Plugins with auto-updates enabled will display the estimated date of the next auto-update. Auto-updates depends on the WP-Cron task scheduling system.</p>
@@ -107,7 +118,7 @@ export default function Plugins() {
 				</div>
 				<div className="wrap">
 					<h1 className="wp-heading-inline">Plugins</h1>
-					<a href="/" className="page-title-action">
+					<a href="/rp-admin/plugin-install" className="page-title-action">
 						Add New
 					</a>
 					<hr className="wp-header-end" />
@@ -115,27 +126,33 @@ export default function Plugins() {
 					<ul className="subsubsub">
 						<li className="all">
 							<a href="/" className="current" aria-current="page">
-								All <span className="count">(7)</span>
+								All <span className="count">({total})</span>
 							</a>
-							|
+							{active > 0 || inactive > 0 ? " |" : ""}
 						</li>
-						<li className="active">
-							<a href="/">
-								Active <span className="count">(7)</span>
-							</a>
-							|
-						</li>
-						<li className="auto-update-enabled">
-							<a href="/">
-								Auto-updates Enabled <span className="count">(6)</span>
-							</a>
-							|
-						</li>
-						<li className="auto-update-disabled">
-							<a href="/">
-								Auto-updates Disabled <span className="count">(1)</span>
-							</a>
-						</li>
+						{active > 0 ? (
+							<li className="active">
+								<a href="/">
+									Active <span className="count">({active})</span>
+								</a>
+								{inactive > 0 || updates > 0 ? " |" : ""}
+							</li>
+						) : null}
+						{inactive > 0 ? (
+							<li className="inactive">
+								<a href="/">
+									Inactive <span className="count">({inactive})</span>
+								</a>
+								{updates > 0 ? " |" : ""}
+							</li>
+						) : null}
+						{updates > 0 ? (
+							<li className="upgrade">
+								<a href="/">
+									Update Available <span className="count">({updates})</span>
+								</a>
+							</li>
+						) : null}
 					</ul>
 					<form className="search-form search-plugins" method="get">
 						<p className="search-box">
@@ -168,7 +185,7 @@ export default function Plugins() {
 								<input type="submit" id="doaction" className="button action" defaultValue="Apply" />
 							</div>
 							<div className="tablenav-pages one-page">
-								<span className="displaying-num">7 items</span>
+								<span className="displaying-num">{items(total)}</span>
 								<span className="pagination-links">
 									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 										«
@@ -217,299 +234,76 @@ export default function Plugins() {
 								</tr>
 							</thead>
 							<tbody id="the-list">
-								<tr className="active" data-slug="custom-post-type-ui" data-plugin="custom-post-type-ui/custom-post-type-ui.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_67bda0534ec5614464a0c6298c100565">
-											Select Custom Post Type UI
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="custom-post-type-ui/custom-post-type-ui.php" id="checkbox_67bda0534ec5614464a0c6298c100565" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>Custom Post Type UI</strong>
-										<div className="row-actions visible">
-											<span className={"0"}>
-												<a href="/">About</a> |
-											</span>
-											<span className={"1"}>
-												<a href="/">Help</a> |
-											</span>
-											<span className="deactivate">
-												<a href="/" id="deactivate-custom-post-type-ui" aria-label="Deactivate Custom Post Type UI">
-													Deactivate
+								{plugins.map((p) => {
+									const file = `${p.slug}/${p.slug}.php`;
+									return (
+										<tr key={p.id} className={p.active ? "active" : "inactive"} data-slug={p.slug} data-plugin={file}>
+											<th scope="row" className="check-column">
+												<label className="screen-reader-text" htmlFor={`checkbox_${p.id}`}>
+													Select {p.name}
+												</label>
+												<input type="checkbox" name="checked[]" defaultValue={file} id={`checkbox_${p.id}`} />
+											</th>
+											<td className="plugin-title column-primary">
+												<strong>{p.name}</strong>
+												<div className="row-actions visible">
+													{p.active ? (
+														<span className="deactivate">
+															<a href="/" id={`deactivate-${p.slug}`} aria-label={`Deactivate ${p.name}`}>
+																Deactivate
+															</a>
+														</span>
+													) : (
+														<>
+															<span className="activate">
+																<a href="/" id={`activate-${p.slug}`} className="edit" aria-label={`Activate ${p.name}`}>
+																	Activate
+																</a>
+																{" | "}
+															</span>
+															<span className="delete">
+																<a href="/" id={`delete-${p.slug}`} aria-label={`Delete ${p.name}`}>
+																	Delete
+																</a>
+															</span>
+														</>
+													)}
+												</div>
+												<button type="button" className="toggle-row">
+													<span className="screen-reader-text">Show more details</span>
+												</button>
+											</td>
+											<td className="column-description desc">
+												<div className="plugin-description">
+													<p>{p.description}</p>
+												</div>
+												<div className={`${p.active ? "active" : "inactive"} second plugin-version-author-uri`}>
+													Version {p.version} | By{" "}
+													<a href={p.author_url ?? "/"}>{p.author}</a> |{" "}
+													<a href="/" className="thickbox open-plugin-details-modal" aria-label={`More information about ${p.name}`} data-title={p.name}>
+														View details
+													</a>
+													{p.update_available ? (
+														<div className="update-message notice inline notice-warning notice-alt">
+															<p>
+																There is a new version of {p.name} available. <a href="/">View details</a> or <a href="/">update now</a>.
+															</p>
+														</div>
+													) : null}
+												</div>
+											</td>
+											<td className="column-auto-updates">
+												<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
+													<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
+													<span className="label">{p.update_available ? "Enable auto-updates" : "Disable auto-updates"}</span>
 												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>Admin UI panel for registering custom post types and taxonomies in ReactPress</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 1.13.4 | By <a href="/">WebDevStudios</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about Custom Post Type UI" data-title="Custom Post Type UI">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active" data-slug="headless-mode" data-plugin="headless-mode/headless-mode.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_ce92bae431b7778760a6783ee8f9e563">
-											Select Headless Mode
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="headless-mode/headless-mode.php" id="checkbox_ce92bae431b7778760a6783ee8f9e563" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>Headless Mode</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a href="/" id="deactivate-headless-mode" aria-label="Deactivate Headless Mode">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>This plugin disables access to the front end of your site unless the logged-in user can edit posts. It also automatically accepts requests to REST API or WP_GRAPHQL endpoints.</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 0.4.0 | By <a href="/">Josh Pollock, Jason Bahl, and Ben Meredith</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about Headless Mode" data-title="Headless Mode">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active is-uninstallable" data-slug="integrate-firebase" data-plugin="integrate-firebase/init.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_86770beedb154722620934ebd51562c2">
-											Select Integrate Firebase
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="integrate-firebase/init.php" id="checkbox_86770beedb154722620934ebd51562c2" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>Integrate Firebase</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a href="/" id="deactivate-integrate-firebase" aria-label="Deactivate Integrate Firebase">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>Integrate Firebase is a plugin that helps to integrate Firebase features to ReactPress</p>
-										</div>
-										<div className="active is-uninstallable second plugin-version-author-uri">
-											Version 0.9.1 | By <a href="/">dalenguyen</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about Integrate Firebase" data-title="Integrate Firebase">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Enable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active" data-slug="pageviews" data-plugin="pageviews/post-views-total-views-wpgraphql.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_9bab0789d807ffc4e6716b564779a13f">
-											Select Post Views and Total Views for WPGraphQL
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="pageviews/post-views-total-views-wpgraphql.php" id="checkbox_9bab0789d807ffc4e6716b564779a13f" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>Post Views and Total Views for WPGraphQL</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a href="/" id="deactivate-pageviews" aria-label="Deactivate Post Views and Total Views for WPGraphQL">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>A plugin that adds view count tracking and a total post views field to WPGraphQL.</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 1.0 | By <a href="/">Your Name</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about Post Views and Total Views for WPGraphQL" data-title="Post Views and Total Views for WPGraphQL">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active" data-slug="reactpress-importer" data-plugin="reactpress-importer/reactpress-importer.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_ea0788bc52985519a71bb7f2132d3b0b">
-											Select ReactPress Importer
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="reactpress-importer/reactpress-importer.php" id="checkbox_ea0788bc52985519a71bb7f2132d3b0b" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>ReactPress Importer</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a href="/" id="deactivate-reactpress-importer" aria-label="Deactivate ReactPress Importer">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>Import posts, pages, comments, custom fields, categories, tags and more from a ReactPress export file.</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 0.8 | By <a href="/">reactpressdotorg</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about ReactPress Importer" data-title="ReactPress Importer">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active" data-slug="wp-graphql" data-plugin="wp-graphql/wp-graphql.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_60530a700e687ae530ac7a3c5a0f5bfa">
-											Select WP GraphQL
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="wp-graphql/wp-graphql.php" id="checkbox_60530a700e687ae530ac7a3c5a0f5bfa" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>WP GraphQL</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a className="wp-graphql-deactivate-link" href="/" id="deactivate-wp-graphql" aria-label="Deactivate WP GraphQL">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>GraphQL API for ReactPress</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 1.13.8 | By <a href="/">WPGraphQL</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about WP GraphQL" data-title="WP GraphQL">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
-								<tr className="active" data-slug="wpgraphql-smart-cache" data-plugin="wpgraphql-smart-cache/wp-graphql-smart-cache.php">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="checkbox_499a8f093548f93283c68ceafb41cde9">
-											Select WPGraphQL Smart Cache
-										</label>
-										<input type="checkbox" name="checked[]" defaultValue="wpgraphql-smart-cache/wp-graphql-smart-cache.php" id="checkbox_499a8f093548f93283c68ceafb41cde9" />
-									</th>
-									<td className="plugin-title column-primary">
-										<strong>WPGraphQL Smart Cache</strong>
-										<div className="row-actions visible">
-											<span className="deactivate">
-												<a className="wpgraphql-smart-cache-deactivate-link" href="/" id="deactivate-wpgraphql-smart-cache" aria-label="Deactivate WPGraphQL Smart Cache">
-													Deactivate
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="column-description desc">
-										<div className="plugin-description">
-											<p>Smart Caching and Cache Invalidation for WPGraphQL</p>
-										</div>
-										<div className="active second plugin-version-author-uri">
-											Version 1.0 | By <a href="/">WPGraphQL</a> |
-											<a href="/" className="thickbox open-plugin-details-modal" aria-label="More information about WPGraphQL Smart Cache" data-title="WPGraphQL Smart Cache">
-												View details
-											</a>
-										</div>
-									</td>
-									<td className="column-auto-updates">
-										<a href="/" className="toggle-auto-update aria-button-if-js" data-wp-action="#" role="button">
-											<span className="dashicons dashicons-update spin hidden" aria-hidden="true" />
-											<span className="label">Disable auto-updates</span>
-										</a>
-										<div className="notice notice-error notice-alt inline hidden">
-											<p />
-										</div>
-									</td>
-								</tr>
+												<div className="notice notice-error notice-alt inline hidden">
+													<p />
+												</div>
+											</td>
+										</tr>
+									);
+								})}
 							</tbody>
 							<tfoot>
 								<tr>
@@ -531,51 +325,8 @@ export default function Plugins() {
 								</tr>
 							</tfoot>
 						</table>
-						<div className="tablenav bottom">
-							<div className="alignleft actions bulkactions">
-								<label htmlFor="bulk-action-selector-bottom" className="screen-reader-text">
-									Select bulk action
-								</label>
-								<select name="action2" id="bulk-action-selector-bottom">
-									<option value={-1}>Bulk actions</option>
-									<option value="activate-selected">Activate</option>
-									<option value="deactivate-selected">Deactivate</option>
-									<option value="update-selected">Update</option>
-									<option value="delete-selected">Delete</option>
-									<option value="enable-auto-update-selected">Enable Auto-updates</option>
-									<option value="disable-auto-update-selected">Disable Auto-updates</option>
-								</select>
-								<input type="submit" id="doaction2" className="button action" defaultValue="Apply" />
-							</div>
-							<div className="tablenav-pages one-page">
-								<span className="displaying-num">7 items</span>
-								<span className="pagination-links">
-									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
-										«
-									</span>
-									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
-										‹
-									</span>
-									<span className="screen-reader-text">Current Page</span>
-									<span id="table-paging" className="paging-input">
-										<span className="tablenav-paging-text">
-											1 of <span className="total-pages">1</span>
-										</span>
-									</span>
-									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
-										›
-									</span>
-									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
-										»
-									</span>
-								</span>
-							</div>
-							<br className="clear" />
-						</div>
 					</form>
-					<span className="spinner" />
 				</div>
-				<div className="clear" />
 			</div>
 		</>
 	);
