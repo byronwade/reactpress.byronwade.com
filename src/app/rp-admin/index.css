@@ -3773,6 +3773,24 @@ p.search-box {
 .no-js li.wp-has-submenu:hover .wp-submenu {
 	top: -1px;
 }
+#adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu {
+	position: relative;
+	z-index: 3;
+	top: auto;
+	left: auto;
+	right: auto;
+	bottom: auto;
+	border: 0 none;
+	margin-top: 0;
+	box-shadow: none;
+}
+.folded #adminmenu a.wp-has-current-submenu:focus + .wp-submenu,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu {
+	position: absolute;
+	top: -1000em;
+}
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub > a.menu-top,
 #adminmenu li > a.menu-top:hover {
