@@ -7113,19 +7113,9 @@ ul#adminmenu > li.current > a.current:after {
 #adminmenu li span.count-0 {
 	display: none;
 }
-#collapse-button {
-	display: block;
-	width: 100%;
-	height: 34px;
-	margin: 0;
-	border: none;
-	padding: 0;
-	position: relative;
-	overflow: visible;
-	background: 0 0;
-	color: #a7aaad;
-	cursor: pointer;
-}
+/* #collapse-button base converted to Tailwind on the button in sidebar.tsx.
+   :hover/:focus, the icon/label positioning + dashicon glyph, and the .folded
+   override stay as CSS below. */
 #collapse-button:hover {
 	color: #72aee6;
 }

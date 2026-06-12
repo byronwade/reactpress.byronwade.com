@@ -366,7 +366,7 @@ export default function Sidebar() {
 							<div className="separator" />
 						</li>
 						<li id="collapse-menu" className="hide-if-no-js">
-							<button type="button" id="collapse-button" aria-label="Collapse Main menu" aria-expanded="true">
+							<button type="button" id="collapse-button" className="tw-relative tw-block tw-w-full tw-h-[34px] tw-m-0 tw-p-0 tw-border-none tw-overflow-visible tw-bg-transparent tw-text-wp-icon tw-cursor-pointer" aria-label="Collapse Main menu" aria-expanded="true">
 								<span className="collapse-button-icon" aria-hidden="true" />
 								<span className="collapse-button-label">Collapse menu</span>
 							</button>
