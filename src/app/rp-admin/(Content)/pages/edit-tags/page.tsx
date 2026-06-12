@@ -1,5 +1,13 @@
 import React from "react";
-export default function EditTags() {
+import { getDb } from "@/lib/fakebase/client";
+import { items } from "@/lib/fakebase/format";
+import type { TermRow } from "@/lib/fakebase/schema";
+
+export default async function EditTags() {
+	const db = await getDb();
+	const { data } = await db.from("terms").select("*").eq("taxonomy", "post_tag").order("name", { ascending: true });
+	const tags: TermRow[] = data ?? [];
+	const total = tags.length;
 	return (
 		<>
 			<div id="wpbody-content">
@@ -166,7 +174,7 @@ export default function EditTags() {
 											<input type="submit" id="doaction" className="button action" defaultValue="Apply" />
 										</div>
 										<div className="tablenav-pages one-page">
-											<span className="displaying-num">1 item</span>
+											<span className="displaying-num">{items(total)}</span>
 											<span className="pagination-links">
 												<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 													«
@@ -230,64 +238,72 @@ export default function EditTags() {
 											</tr>
 										</thead>
 										<tbody id="the-list" data-wp-lists="list:tag">
-											<tr id="tag-2" className="level-0">
-												<th scope="row" className="check-column">
-													<label className="screen-reader-text" htmlFor="cb-select-2">
-														Select News
-													</label>
-													<input type="checkbox" name="delete_tags[]" defaultValue={2} id="cb-select-2" />
-												</th>
-												<td className="name column-name has-row-actions column-primary" data-colname="Name">
-													<strong>
-														<a className="row-title" href="/" aria-label="“News” (Edit)">
-															News
-														</a>
-													</strong>
-													<br />
-													<div className="hidden" id="inline_2">
-														<div className="name">News</div>
-														<div className="slug">news</div>
-													</div>
-													<div className="row-actions">
-														<span className="edit">
-															<a href="/" aria-label="Edit “News”">
-																Edit
+											{tags.map((t) => (
+												<tr key={t.id} id={`tag-${t.id}`} className="level-0">
+													<th scope="row" className="check-column">
+														<label className="screen-reader-text" htmlFor={`cb-select-${t.id}`}>
+															Select {t.name}
+														</label>
+														<input type="checkbox" name="delete_tags[]" defaultValue={t.id} id={`cb-select-${t.id}`} />
+													</th>
+													<td className="name column-name has-row-actions column-primary" data-colname="Name">
+														<strong>
+															<a className="row-title" href="/" aria-label={`“${t.name}” (Edit)`}>
+																{t.name}
 															</a>
-															|
-														</span>
-														<span className="inline hide-if-no-js">
-															<button type="button" className="button-link editinline" aria-label="Quick edit “News” inline" aria-expanded="false">
-																Quick&nbsp;Edit
-															</button>
-															|
-														</span>
-														<span className="delete">
-															<a href="/" className="delete-tag aria-button-if-js" aria-label="Delete “News”" role="button">
-																Delete
-															</a>
-															|
-														</span>
-														<span className="view">
-															<a href="/" aria-label="View “News” archive">
-																View
-															</a>
-														</span>
-													</div>
-													<button type="button" className="toggle-row">
-														<span className="screen-reader-text">Show more details</span>
-													</button>
-												</td>
-												<td className="description column-description" data-colname="Description">
-													<span aria-hidden="true">—</span>
-													<span className="screen-reader-text">No description</span>
-												</td>
-												<td className="slug column-slug" data-colname="Slug">
-													news
-												</td>
-												<td className="posts column-posts" data-colname="Count">
-													<a href="/">1</a>
-												</td>
-											</tr>
+														</strong>
+														<br />
+														<div className="hidden" id={`inline_${t.id}`}>
+															<div className="name">{t.name}</div>
+															<div className="slug">{t.slug}</div>
+														</div>
+														<div className="row-actions">
+															<span className="edit">
+																<a href="/" aria-label={`Edit “${t.name}”`}>
+																	Edit
+																</a>
+																|
+															</span>
+															<span className="inline hide-if-no-js">
+																<button type="button" className="button-link editinline" aria-label={`Quick edit “${t.name}” inline`} aria-expanded="false">
+																	Quick&nbsp;Edit
+																</button>
+																|
+															</span>
+															<span className="delete">
+																<a href="/" className="delete-tag aria-button-if-js" aria-label={`Delete “${t.name}”`} role="button">
+																	Delete
+																</a>
+																|
+															</span>
+															<span className="view">
+																<a href="/" aria-label={`View “${t.name}” archive`}>
+																	View
+																</a>
+															</span>
+														</div>
+														<button type="button" className="toggle-row">
+															<span className="screen-reader-text">Show more details</span>
+														</button>
+													</td>
+													<td className="description column-description" data-colname="Description">
+														{t.description ? (
+															t.description
+														) : (
+															<>
+																<span aria-hidden="true">—</span>
+																<span className="screen-reader-text">No description</span>
+															</>
+														)}
+													</td>
+													<td className="slug column-slug" data-colname="Slug">
+														{t.slug}
+													</td>
+													<td className="posts column-posts" data-colname="Count">
+														<a href="/">{t.count}</a>
+													</td>
+												</tr>
+											))}
 										</tbody>
 										<tfoot>
 											<tr>
@@ -336,7 +352,7 @@ export default function EditTags() {
 											<input type="submit" id="doaction2" className="button action" defaultValue="Apply" />
 										</div>
 										<div className="tablenav-pages one-page">
-											<span className="displaying-num">1 item</span>
+											<span className="displaying-num">{items(total)}</span>
 											<span className="pagination-links">
 												<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 													«
