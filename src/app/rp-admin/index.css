@@ -1986,11 +1986,10 @@ html:lang(he-il) .rtl #wpadminbar * {
 /* #wpwrap base styles converted to Tailwind on the #wpwrap div in
    rp-admin/layout.tsx. Stateful #wpwrap rules (modal-open, wp-responsive-open)
    remain below as CSS. */
-#wpcontent {
-	height: 100%;
-	padding-left: 20px;
-}
-#wpcontent,
+/* #wpcontent base (height, padding-left, margin-left) converted to Tailwind on
+   #wpcontent in rp-admin/layout.tsx. The .folded/.auto-fold/responsive and
+   per-screen (.privacy-settings/.about-php etc.) overrides below stay as CSS
+   and still win by ID specificity. #wpfooter keeps its margin-left here. */
 #wpfooter {
 	margin-left: 160px;
 }

@@ -16,7 +16,7 @@ export default function RPAdmin({ children }: Props) {
 				<Toolbar />
 				<div id="wpwrap" className="tw-relative tw-h-auto tw-min-h-full tw-w-full tw-[-webkit-font-smoothing:subpixel-antialiased]">
 					<Sidebar />
-					<div id="wpcontent">
+					<div id="wpcontent" className="tw-ml-[160px] tw-h-full tw-pl-[20px]">
 						<div id="wpbody" role="main" className="tw-relative">
 							{children}
 						</div>
