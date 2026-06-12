@@ -8,7 +8,7 @@ export default function Sidebar() {
 	return (
 		<>
 			<div id="adminmenumain" role="navigation" aria-label="Main menu">
-				<div id="adminmenuback" />
+				<div id="adminmenuback" className="tw-fixed tw-top-0 tw-bottom-[-120px] tw-z-[1] tw-w-[160px] tw-bg-wp-chrome" />
 				<div id="adminmenuwrap" className="tw-w-[160px] tw-bg-wp-chrome tw-relative tw-float-left tw-z-[9990]">
 					<ul id="adminmenu" className="tw-clear-left tw-my-[12px] tw-mx-0 tw-p-0 tw-list-none">
 						<li className={`wp-first-item wp-has-submenu ${location === "/rp-admin" || location === "/rp-admin/updates" ? "wp-has-current-submenu wp-menu-open" : "wp-not-current-submenu"} menu-top menu-top-first menu-icon-dashboard menu-top-last`} id="menu-dashboard">

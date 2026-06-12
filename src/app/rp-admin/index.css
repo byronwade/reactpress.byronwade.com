@@ -6739,17 +6739,13 @@ table.form-table td .updated p {
 }
 /*! This file is auto-generated */
 #adminmenu,
-#adminmenu .wp-submenu,
-#adminmenuback {
+#adminmenu .wp-submenu {
 	width: 160px;
 	background-color: #1d2327;
 }
-#adminmenuback {
-	position: fixed;
-	top: 0;
-	bottom: -120px;
-	z-index: 1;
-}
+/* #adminmenuback base (width/bg + fixed/top/bottom/z-index) converted to
+   Tailwind on <div id="adminmenuback"> in sidebar.tsx. The .php-error and
+   .folded #adminmenuback overrides below stay as CSS (more specific). */
 .php-error #adminmenuback {
 	position: absolute;
 }
