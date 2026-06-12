@@ -45,3 +45,26 @@ export function fileSize(bytes: number): string {
 	if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
 	return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function ordinal(n: number): string {
+	const s = ["th", "st", "nd", "rd"];
+	const v = n % 100;
+	return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+/** Dashboard activity date, e.g. "Feb 16th, 7:33 pm". */
+export function wpActivityDate(iso: string): string {
+	const d = new Date(iso);
+	let h = d.getUTCHours();
+	const min = String(d.getUTCMinutes()).padStart(2, "0");
+	const ampm = h >= 12 ? "pm" : "am";
+	h = h % 12 || 12;
+	return `${MONTHS_SHORT[d.getUTCMonth()]} ${ordinal(d.getUTCDate())}, ${h}:${min} ${ampm}`;
+}
+
+/** Pluralize a noun with its count, e.g. "4 Posts" / "1 Post". */
+export function countLabel(n: number, singular: string, plural = `${singular}s`): string {
+	return `${n} ${n === 1 ? singular : plural}`;
+}

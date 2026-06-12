@@ -1,7 +1,23 @@
 import React from "react";
 import { MenuOptions } from "./MenuOptions";
+import { getDb } from "@/lib/fakebase/client";
+import { countLabel, wpActivityDate } from "@/lib/fakebase/format";
+import type { CommentRow, PostRow } from "@/lib/fakebase/schema";
 
-export default function Index() {
+export default async function Index() {
+	const db = await getDb();
+	const [postsRes, commentsRes] = await Promise.all([db.from("posts").select("*"), db.from("comments").select("*")]);
+	const allPosts: PostRow[] = postsRes.data ?? [];
+	const allComments: CommentRow[] = commentsRes.data ?? [];
+
+	const postCount = allPosts.filter((p) => p.type === "post" && p.status === "publish").length;
+	const pageCount = allPosts.filter((p) => p.type === "page" && p.status === "publish").length;
+	const commentCount = allComments.filter((c) => c.status === "approved").length;
+	const recentlyPublished = allPosts
+		.filter((p) => p.type === "post" && p.status === "publish")
+		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+		.slice(0, 5);
+
 	return (
 		<>
 			<div id="wpbody-content">
@@ -238,10 +254,13 @@ export default function Index() {
 											<div className="main">
 												<ul>
 													<li className="post-count">
-														<a href="/">4 Posts</a>
+														<a href="/rp-admin/posts/edit">{countLabel(postCount, "Post")}</a>
 													</li>
 													<li className="page-count">
-														<a href="/">1 Page</a>
+														<a href="/rp-admin/pages/edit">{countLabel(pageCount, "Page")}</a>
+													</li>
+													<li className="comment-count">
+														<a href="/rp-admin/edit-comments">{countLabel(commentCount, "Comment")}</a>
 													</li>
 												</ul>
 												<p id="wp-version-message">
@@ -281,30 +300,14 @@ export default function Index() {
 												<div id="published-posts" className="activity-block">
 													<h3>Recently Published</h3>
 													<ul>
-														<li>
-															<span>Feb 16th, 1:38 am</span>
-															<a href="/" aria-label="Edit “The New Website Design Trends: Overstimulation. Parallax zoom scrolling. '90s navigation. Scrapbook aesthetic.”">
-																The New Website Design Trends: Overstimulation. Parallax zoom scrolling. &apos;90s navigation. Scrapbook aesthetic.
-															</a>
-														</li>
-														<li>
-															<span>Feb 15th, 10:30 pm</span>
-															<a href="/" aria-label="Edit “Google's 200 Ranking Factors: The Complete List (2022)”">
-																Google&apos;s 200 Ranking Factors: The Complete List (2022)
-															</a>
-														</li>
-														<li>
-															<span>Feb 15th, 5:46 am</span>
-															<a href="/" aria-label="Edit “How Microsoft Bing's New Chat AI Could Impact Website SEO”">
-																How Microsoft Bing&apos;s New Chat AI Could Impact Website SEO
-															</a>
-														</li>
-														<li>
-															<span>Feb 15th, 5:45 am</span>
-															<a href="/" aria-label="Edit “22 Ways ChatGPT Could Be Used in Website Design”">
-																22 Ways ChatGPT Could Be Used in Website Design
-															</a>
-														</li>
+														{recentlyPublished.map((p) => (
+															<li key={p.id}>
+																<span>{wpActivityDate(p.date)}</span>
+																<a href="/rp-admin/posts/edit" aria-label={`Edit “${p.title}”`}>
+																	{p.title}
+																</a>
+															</li>
+														))}
 													</ul>
 												</div>
 											</div>
