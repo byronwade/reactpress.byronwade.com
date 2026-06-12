@@ -1,5 +1,34 @@
 import React from "react";
-export default function Users() {
+import { getDb } from "@/lib/fakebase/client";
+import type { UserRow } from "@/lib/fakebase/schema";
+
+const ROLE_LABELS: Record<string, string> = {
+	administrator: "Administrator",
+	editor: "Editor",
+	author: "Author",
+	contributor: "Contributor",
+	subscriber: "Subscriber",
+};
+
+function roleLabel(role: string): string {
+	return ROLE_LABELS[role] ?? role.charAt(0).toUpperCase() + role.slice(1);
+}
+
+function items(n: number): string {
+	return `${n} item${n === 1 ? "" : "s"}`;
+}
+
+export default async function Users() {
+	const db = await getDb();
+	const { data } = await db.from("users").select("*").order("id", { ascending: true });
+	const users: UserRow[] = data ?? [];
+
+	const total = users.length;
+	const roleCounts = users.reduce<Record<string, number>>((acc, u) => {
+		acc[u.role] = (acc[u.role] ?? 0) + 1;
+		return acc;
+	}, {});
+
 	return (
 		<>
 			<div id="wpbody-content">
@@ -114,7 +143,7 @@ export default function Users() {
 				</div>
 				<div className="wrap">
 					<h1 className="wp-heading-inline">Users</h1>
-					<a href="/" className="page-title-action">
+					<a href="/rp-admin/user-new" className="page-title-action">
 						Add New
 					</a>
 					<hr className="wp-header-end" />
@@ -122,15 +151,18 @@ export default function Users() {
 					<ul className="subsubsub">
 						<li className="all">
 							<a href="/" className="current" aria-current="page">
-								All <span className="count">(1)</span>
+								All <span className="count">({total})</span>
 							</a>
-							|
+							{Object.keys(roleCounts).length > 0 ? " |" : ""}
 						</li>
-						<li className="administrator">
-							<a href="/">
-								Administrator <span className="count">(1)</span>
-							</a>
-						</li>
+						{Object.keys(roleCounts).map((role, i, arr) => (
+							<li key={role} className={role}>
+								<a href="/">
+									{roleLabel(role)} <span className="count">({roleCounts[role]})</span>
+								</a>
+								{i < arr.length - 1 ? " |" : ""}
+							</li>
+						))}
 					</ul>
 					<form method="get">
 						<p className="search-box">
@@ -169,7 +201,7 @@ export default function Users() {
 								<input type="submit" name="changeit" id="changeit" className="button" defaultValue="Change" />
 							</div>
 							<div className="tablenav-pages one-page">
-								<span className="displaying-num">1 item</span>
+								<span className="displaying-num">{items(total)}</span>
 								<span className="pagination-links">
 									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 										«
@@ -230,50 +262,55 @@ export default function Users() {
 								</tr>
 							</thead>
 							<tbody id="the-list" data-wp-lists="list:user">
-								<tr id="user-1">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="user_1">
-											Select bcw1995@gmail.com
-										</label>
-										<input type="checkbox" name="users[]" id="user_1" className="administrator" defaultValue={1} />
-									</th>
-									<td className="username column-username has-row-actions column-primary" data-colname="Username">
-										<img alt="" src="https://secure.gravatar.com/avatar/08c21cf8ce49f5d7d5c1d8e49d4649f8?s=32&d=mm&r=g" srcSet="https://secure.gravatar.com/avatar/08c21cf8ce49f5d7d5c1d8e49d4649f8?s=64&d=mm&r=g 2x" className="avatar avatar-32 photo" height={32} width={32} loading="lazy" decoding="async" />
-										<strong>
-											<a href="/">bcw1995@gmail.com</a>
-										</strong>
-										<br />
-										<div className="row-actions">
-											<span className="edit">
-												<a href="/">Edit</a> |
-											</span>
-											<span className="view">
-												<a href="/" aria-label="View posts by bcw1995@gmail.com">
-													View
+								{users.map((u) => (
+									<tr key={u.id} id={`user-${u.id}`}>
+										<th scope="row" className="check-column">
+											<label className="screen-reader-text" htmlFor={`user_${u.id}`}>
+												Select {u.username}
+											</label>
+											<input type="checkbox" name="users[]" id={`user_${u.id}`} className={u.role} defaultValue={u.id} />
+										</th>
+										<td className="username column-username has-row-actions column-primary" data-colname="Username">
+											<img alt="" src="https://secure.gravatar.com/avatar/?s=32&d=mm&r=g" srcSet="https://secure.gravatar.com/avatar/?s=64&d=mm&r=g 2x" className="avatar avatar-32 photo" height={32} width={32} loading="lazy" decoding="async" />
+											<strong>
+												<a href="/rp-admin/profile">{u.username}</a>
+											</strong>
+											<br />
+											<div className="row-actions">
+												<span className="edit">
+													<a href="/rp-admin/profile">Edit</a> |
+												</span>
+												<span className="view">
+													<a href="/" aria-label={`View posts by ${u.display_name}`}>
+														View
+													</a>
+												</span>
+											</div>
+											<button type="button" className="toggle-row">
+												<span className="screen-reader-text">Show more details</span>
+											</button>
+										</td>
+										<td className="name column-name" data-colname="Name">
+											{u.display_name}
+										</td>
+										<td className="email column-email" data-colname="Email">
+											<a href={`mailto:${u.email}`}>{u.email}</a>
+										</td>
+										<td className="role column-role" data-colname="Role">
+											{roleLabel(u.role)}
+										</td>
+										<td className="posts column-posts num" data-colname="Posts">
+											{u.post_count > 0 ? (
+												<a href="/" className="edit">
+													<span aria-hidden="true">{u.post_count}</span>
+													<span className="screen-reader-text">{u.post_count} posts by this author</span>
 												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="name column-name" data-colname="Name">
-										<span aria-hidden="true">—</span>
-										<span className="screen-reader-text">Unknown</span>
-									</td>
-									<td className="email column-email" data-colname="Email">
-										<a href="/">bcw1995@gmail.com</a>
-									</td>
-									<td className="role column-role" data-colname="Role">
-										Administrator
-									</td>
-									<td className="posts column-posts num" data-colname="Posts">
-										<a href="/" className="edit">
-											<span aria-hidden="true">4</span>
-											<span className="screen-reader-text">4 posts by this author</span>
-										</a>
-									</td>
-								</tr>
+											) : (
+												<span aria-hidden="true">0</span>
+											)}
+										</td>
+									</tr>
+								))}
 							</tbody>
 							<tfoot>
 								<tr>
@@ -334,7 +371,7 @@ export default function Users() {
 								<input type="submit" name="changeit2" id="changeit2" className="button" defaultValue="Change" />
 							</div>
 							<div className="tablenav-pages one-page">
-								<span className="displaying-num">1 item</span>
+								<span className="displaying-num">{items(total)}</span>
 								<span className="pagination-links">
 									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 										«
