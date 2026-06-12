@@ -1,5 +1,4 @@
 import React from "react";
-//import "./install.css";
 export default function InstallStep1() {
 	return (
 		<>

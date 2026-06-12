@@ -18,7 +18,6 @@ export default function Page() {
 // import "@reactpress/block-library/build-style/editor.css";
 // import "@reactpress/block-library/build-style/theme.css";
 // import "@reactpress/format-library/build-style/style.css";
-// import "./styles.css";
 
 // if (typeof window !== "undefined") {
 // 	registerCoreBlocks();
