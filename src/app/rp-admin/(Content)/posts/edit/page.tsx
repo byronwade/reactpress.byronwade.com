@@ -14,9 +14,9 @@ export default function Edit() {
 											Overview
 										</a>
 									</li>
-									<li id="tab-link-managing-pages">
-										<a href="/" aria-controls="tab-panel-managing-pages">
-											Managing Pages
+									<li id="tab-link-screen-content">
+										<a href="/" aria-controls="tab-panel-screen-content">
+											Screen Content
 										</a>
 									</li>
 								</ul>
@@ -26,7 +26,7 @@ export default function Edit() {
 									<strong>For more information:</strong>
 								</p>
 								<p>
-									<a href="/">Documentation on Managing Pages</a>
+									<a href="/">Documentation on Managing Posts</a>
 								</p>
 								<p>
 									<a href="/">Support</a>
@@ -34,11 +34,15 @@ export default function Edit() {
 							</div>
 							<div className="contextual-help-tabs-wrap">
 								<div id="tab-panel-overview" className="help-tab-content active">
-									<p>Pages are similar to posts in that they have a title, body text, and associated metadata, but they are different in that they are not part of the chronological blog stream, kind of like permanent posts. Pages are not categorized or tagged, but can have a hierarchy. You can nest pages under other pages by making one the “Parent” of the other, creating a group of pages.</p>
+									<p>This screen provides access to all of your posts. You can customize the display of this screen to suit your workflow.</p>
 								</div>
-								<div id="tab-panel-managing-pages" className="help-tab-content">
-									<p>Managing pages is very similar to managing posts, and the screens can be customized in the same way.</p>
-									<p>You can also perform the same types of actions, including narrowing the list by using the filters, acting on a page using the action links that appear when you hover over a row, or using the Bulk actions menu to edit the metadata for multiple pages at once.</p>
+								<div id="tab-panel-screen-content" className="help-tab-content">
+									<p>You can customize the display of this screen’s contents in a number of ways:</p>
+									<ul>
+										<li>You can hide/display columns based on your needs and decide how many posts to list per screen using the Screen Options tab.</li>
+										<li>You can filter the list of posts by post status using the text links above the posts list to only show posts with that status. The default view is to show all posts.</li>
+										<li>You can refine the list to show only posts in a specific category or from a specific month by using the dropdown menus above the posts list. Click the Filter button after making your selection. You can also refine the list by clicking on the post author, category or tag in the posts list.</li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -52,6 +56,14 @@ export default function Edit() {
 									Author
 								</label>
 								<label>
+									<input className="hide-column-tog" name="categories-hide" type="checkbox" id="categories-hide" defaultValue="categories" defaultChecked={true} />
+									Categories
+								</label>
+								<label>
+									<input className="hide-column-tog" name="tags-hide" type="checkbox" id="tags-hide" defaultValue="tags" defaultChecked={true} />
+									Tags
+								</label>
+								<label>
 									<input className="hide-column-tog" name="comments-hide" type="checkbox" id="comments-hide" defaultValue="comments" defaultChecked={true} />
 									Comments
 								</label>
@@ -62,9 +74,9 @@ export default function Edit() {
 							</fieldset>
 							<fieldset className="screen-options">
 								<legend>Pagination</legend>
-								<label htmlFor="edit_page_per_page">Number of items per page:</label>
-								<input type="number" step={1} min={1} max={999} className="screen-per-page" name="wp_screen_options[value]" id="edit_page_per_page" maxLength={3} defaultValue={20} />
-								<input type="hidden" name="wp_screen_options[option]" defaultValue="edit_page_per_page" />
+								<label htmlFor="edit_post_per_page">Number of items per page:</label>
+								<input type="number" step={1} min={1} max={999} className="screen-per-page" name="wp_screen_options[value]" id="edit_post_per_page" maxLength={3} defaultValue={20} />
+								<input type="hidden" name="wp_screen_options[option]" defaultValue="edit_post_per_page" />
 							</fieldset>
 							<fieldset className="metabox-prefs view-mode">
 								<legend>View mode</legend>
@@ -97,12 +109,12 @@ export default function Edit() {
 					</div>
 				</div>
 				<div className="wrap">
-					<h1 className="wp-heading-inline">Pages</h1>
+					<h1 className="wp-heading-inline">Posts</h1>
 					<a href="/" className="page-title-action">
 						Add New
 					</a>
 					<hr className="wp-header-end" />
-					<h2 className="screen-reader-text">Filter pages list</h2>
+					<h2 className="screen-reader-text">Filter posts list</h2>
 					<ul className="subsubsub">
 						<li className="all">
 							<a href="/" className="current" aria-current="page">
@@ -119,15 +131,15 @@ export default function Edit() {
 					<form id="posts-filter" method="get">
 						<p className="search-box">
 							<label className="screen-reader-text" htmlFor="post-search-input">
-								Search Pages:
+								Search Posts:
 							</label>
 							<input type="search" id="post-search-input" name="s" defaultValue="" />
-							<input type="submit" id="search-submit" className="button" defaultValue="Search Pages" />
+							<input type="submit" id="search-submit" className="button" defaultValue="Search Posts" />
 						</p>
 						<input type="hidden" name="post_status" className="post_status_page" defaultValue="all" />
-						<input type="hidden" name="post_type" className="post_type_page" defaultValue="page" />
+						<input type="hidden" name="post_type" className="post_type_page" defaultValue="post" />
 						<input type="hidden" id="_wpnonce" name="_wpnonce" defaultValue="7de34e26bb" />
-						<input type="hidden" name="_wp_http_referer" defaultValue="/wp-admin/edit.php?post_type=page" />
+						<input type="hidden" name="_wp_http_referer" defaultValue="/wp-admin/edit.php" />
 						<div className="tablenav top">
 							<div className="alignleft actions bulkactions">
 								<label htmlFor="bulk-action-selector-top" className="screen-reader-text">
@@ -149,6 +161,15 @@ export default function Edit() {
 								<select name="m" id="filter-by-date">
 									<option selected={true}>All dates</option>
 									<option>February 2023</option>
+								</select>
+								<label className="screen-reader-text" htmlFor="cat">
+									Filter by category
+								</label>
+								<select name="cat" id="cat" className="postform">
+									<option value={0}>All Categories</option>
+									<option className="level-0" value={1}>
+										Uncategorized
+									</option>
 								</select>
 								<input type="submit" name="filter_action" id="post-query-submit" className="button" defaultValue="Filter" />
 							</div>
@@ -180,8 +201,8 @@ export default function Edit() {
 							</div>
 							<br className="clear" />
 						</div>
-						<h2 className="screen-reader-text">Pages list</h2>
-						<table className="wp-list-table widefat fixed striped table-view-list pages">
+						<h2 className="screen-reader-text">Posts list</h2>
+						<table className="wp-list-table widefat fixed striped table-view-list posts">
 							<thead>
 								<tr>
 									<td id="cb" className="manage-column column-cb check-column">
@@ -198,6 +219,12 @@ export default function Edit() {
 									</th>
 									<th scope="col" id="author" className="manage-column column-author">
 										Author
+									</th>
+									<th scope="col" id="categories" className="manage-column column-categories">
+										Categories
+									</th>
+									<th scope="col" id="tags" className="manage-column column-tags">
+										Tags
 									</th>
 									<th scope="col" id="comments" className="manage-column column-comments num sortable desc">
 										<a href="/">
@@ -217,15 +244,15 @@ export default function Edit() {
 								</tr>
 							</thead>
 							<tbody id="the-list">
-								<tr id="post-4075" className="iedit author-self level-0 post-4075 type-page status-publish hentry">
+								<tr id="post-1" className="iedit author-self level-0 post-1 type-post status-publish format-standard hentry category-uncategorized">
 									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="cb-select-4075">
-											Select test
+										<label className="screen-reader-text" htmlFor="cb-select-1">
+											Select Hello world!
 										</label>
-										<input id="cb-select-4075" type="checkbox" name="post[]" defaultValue={4075} />
+										<input id="cb-select-1" type="checkbox" name="post[]" defaultValue={1} />
 										<div className="locked-indicator">
 											<span className="locked-indicator-icon" aria-hidden="true" />
-											<span className="screen-reader-text">“test” is locked </span>
+											<span className="screen-reader-text">“Hello world!” is locked </span>
 										</div>
 									</th>
 									<td className="title column-title has-row-actions column-primary page-title" data-colname="Title">
@@ -233,16 +260,16 @@ export default function Edit() {
 											<span className="locked-avatar" /> <span className="locked-text" />
 										</div>
 										<strong>
-											<a className="row-title" href="/" aria-label="“test” (Edit)">
-												test
+											<a className="row-title" href="/" aria-label="“Hello world!” (Edit)">
+												Hello world!
 											</a>
 										</strong>
-										<div className="hidden" id="inline_4075">
-											<div className="post_title">test</div>
-											<div className="post_name">test</div>
+										<div className="hidden" id="inline_1">
+											<div className="post_title">Hello world!</div>
+											<div className="post_name">hello-world</div>
 											<div className="post_author">1</div>
-											<div className="comment_status">closed</div>
-											<div className="ping_status">closed</div>
+											<div className="comment_status">open</div>
+											<div className="ping_status">open</div>
 											<div className="_status">publish</div>
 											<div className="jj">16</div>
 											<div className="mm">02</div>
@@ -251,31 +278,32 @@ export default function Edit() {
 											<div className="mn">33</div>
 											<div className="ss">13</div>
 											<div className="post_password" />
-											<div className="post_parent">0</div>
-											<div className="page_template">default</div>
-											<div className="menu_order">0</div>
+											<div className="post_category" data-category="1" />
+											<div className="tags_input" data-tags="" />
+											<div className="sticky" />
+											<div className="post_format">0</div>
 										</div>
 										<div className="row-actions">
 											<span className="edit">
-												<a href="/" aria-label="Edit “test”">
+												<a href="/" aria-label="Edit “Hello world!”">
 													Edit
 												</a>
 												|
 											</span>
 											<span className="inline hide-if-no-js">
-												<button type="button" className="button-link editinline" aria-label="Quick edit “test” inline" aria-expanded="false">
+												<button type="button" className="button-link editinline" aria-label="Quick edit “Hello world!” inline" aria-expanded="false">
 													Quick&nbsp;Edit
 												</button>
 												|
 											</span>
 											<span className="trash">
-												<a href="/" className="submitdelete" aria-label="Move “test” to the Trash">
+												<a href="/" className="submitdelete" aria-label="Move “Hello world!” to the Trash">
 													Trash
 												</a>
 												|
 											</span>
 											<span className="view">
-												<a href="/" rel="bookmark" aria-label="View “test”">
+												<a href="/" rel="bookmark" aria-label="View “Hello world!”">
 													View
 												</a>
 											</span>
@@ -287,16 +315,21 @@ export default function Edit() {
 									<td className="author column-author" data-colname="Author">
 										<a href="/">bcw1995@gmail.com</a>
 									</td>
+									<td className="categories column-categories" data-colname="Categories">
+										<a href="/">Uncategorized</a>
+									</td>
+									<td className="tags column-tags" data-colname="Tags">
+										<span aria-hidden="true">—</span>
+										<span className="screen-reader-text">No tags</span>
+									</td>
 									<td className="comments column-comments" data-colname="Comments">
 										<div className="post-com-count-wrapper">
-											<span aria-hidden="true">—</span>
-											<span className="screen-reader-text">No comments</span>
-											<span className="post-com-count post-com-count-pending post-com-count-no-pending">
-												<span className="comment-count comment-count-no-pending" aria-hidden="true">
-													0
+											<a href="/" className="post-com-count post-com-count-approved">
+												<span className="comment-count-approved" aria-hidden="true">
+													1
 												</span>
-												<span className="screen-reader-text">No comments</span>
-											</span>
+												<span className="screen-reader-text">1 comment</span>
+											</a>
 										</div>
 									</td>
 									<td className="date column-date" data-colname="Date">
@@ -322,6 +355,12 @@ export default function Edit() {
 									</th>
 									<th scope="col" className="manage-column column-author">
 										Author
+									</th>
+									<th scope="col" className="manage-column column-categories">
+										Categories
+									</th>
+									<th scope="col" className="manage-column column-tags">
+										Tags
 									</th>
 									<th scope="col" className="manage-column column-comments num sortable desc">
 										<a href="/">
@@ -385,8 +424,8 @@ export default function Edit() {
 					<form method="get">
 						<table style={{ display: "none" }}>
 							<tbody id="inlineedit">
-								<tr id="inline-edit" className="inline-edit-row inline-edit-row-page quick-edit-row quick-edit-row-page inline-edit-page" style={{ display: "none" }}>
-									<td colSpan={5} className="colspanchange">
+								<tr id="inline-edit" className="inline-edit-row inline-edit-row-post quick-edit-row quick-edit-row-post inline-edit-post" style={{ display: "none" }}>
+									<td colSpan={7} className="colspanchange">
 										<div className="inline-edit-wrapper" role="region" aria-labelledby="quick-edit-legend">
 											<fieldset className="inline-edit-col-left">
 												<legend className="inline-edit-legend" id="quick-edit-legend">
@@ -473,27 +512,34 @@ export default function Edit() {
 													</div>
 												</div>
 											</fieldset>
+											<fieldset className="inline-edit-col-center inline-edit-categories">
+												<div className="inline-edit-col">
+													<span className="title inline-edit-categories-label">Categories</span>
+													<input type="hidden" name="post_category[]" defaultValue={0} />
+													<ul className="cat-checklist category-checklist">
+														<li id="category-1">
+															<label className="selectit">
+																<input defaultValue={1} type="checkbox" name="post_category[]" id="in-category-1" />
+																Uncategorized
+															</label>
+														</li>
+													</ul>
+												</div>
+											</fieldset>
 											<fieldset className="inline-edit-col-right">
 												<div className="inline-edit-col">
-													<label>
-														<span className="title">Parent</span>
-														<select name="post_parent" id="post_parent">
-															<option value={0}>Main Page (no parent)</option>
-															<option className="level-0" value={4075}>
-																test
-															</option>
-														</select>
-													</label>
-													<label>
-														<span className="title">Order</span>
-														<span className="input-text-wrap">
-															<input type="text" name="menu_order" className="inline-edit-menu-order-input" defaultValue={0} />
-														</span>
+													<label className="inline-edit-tags">
+														<span className="title">Tags</span>
+														<textarea cols={22} rows={1} name="tax_input[post_tag]" className="tax_input_post_tag" aria-describedby="inline-edit-coltags-1" />
 													</label>
 													<div className="inline-edit-group wp-clearfix">
 														<label className="alignleft">
 															<input type="checkbox" name="comment_status" defaultValue="open" />
 															<span className="checkbox-title">Allow Comments</span>
+														</label>
+														<label className="alignleft">
+															<input type="checkbox" name="ping_status" defaultValue="open" />
+															<span className="checkbox-title">Allow Pings</span>
 														</label>
 													</div>
 													<div className="inline-edit-group wp-clearfix">
@@ -505,6 +551,10 @@ export default function Edit() {
 																<option value="pending">Pending Review</option>
 																<option value="draft">Draft</option>
 															</select>
+														</label>
+														<label className="alignleft inline-edit-sticky">
+															<input type="checkbox" name="sticky" defaultValue="sticky" />
+															<span className="checkbox-title">Make this post sticky</span>
 														</label>
 													</div>
 												</div>
@@ -519,7 +569,7 @@ export default function Edit() {
 												</button>
 												<span className="spinner" />
 												<input type="hidden" name="post_view" defaultValue="list" />
-												<input type="hidden" name="screen" defaultValue="edit-page" />
+												<input type="hidden" name="screen" defaultValue="edit-post" />
 												<div className="notice notice-error notice-alt inline hidden">
 													<p className="error" />
 												</div>
@@ -528,8 +578,8 @@ export default function Edit() {
 										{/* end of .inline-edit-wrapper */}
 									</td>
 								</tr>
-								<tr id="bulk-edit" className="inline-edit-row inline-edit-row-page bulk-edit-row bulk-edit-row-page bulk-edit-page" style={{ display: "none" }}>
-									<td colSpan={5} className="colspanchange">
+								<tr id="bulk-edit" className="inline-edit-row inline-edit-row-post bulk-edit-row bulk-edit-row-post bulk-edit-post" style={{ display: "none" }}>
+									<td colSpan={7} className="colspanchange">
 										<div className="inline-edit-wrapper" role="region" aria-labelledby="bulk-edit-legend">
 											<fieldset className="inline-edit-col-left">
 												<legend className="inline-edit-legend" id="bulk-edit-legend">
@@ -541,8 +591,25 @@ export default function Edit() {
 													</div>
 												</div>
 											</fieldset>
+											<fieldset className="inline-edit-col-center inline-edit-categories">
+												<div className="inline-edit-col">
+													<span className="title inline-edit-categories-label">Categories</span>
+													<ul className="cat-checklist category-checklist">
+														<li id="category-1">
+															<label className="selectit">
+																<input defaultValue={1} type="checkbox" name="post_category[]" id="in-category-1" />
+																Uncategorized
+															</label>
+														</li>
+													</ul>
+												</div>
+											</fieldset>
 											<fieldset className="inline-edit-col-right">
 												<div className="inline-edit-col">
+													<label className="inline-edit-tags">
+														<span className="title">Tags</span>
+														<textarea cols={22} rows={1} name="tax_input[post_tag]" className="tax_input_post_tag" />
+													</label>
 													<label className="inline-edit-author">
 														<span className="title">Author</span>
 														<select name="post_author" className="authors">
@@ -550,20 +617,18 @@ export default function Edit() {
 															<option value={1}>bcw1995@gmail.com (bcw1995@gmail.com)</option>
 														</select>
 													</label>
-													<label>
-														<span className="title">Parent</span>
-														<select name="post_parent" id="post_parent">
-															<option value={-1}>— No Change —</option>
-															<option value={0}>Main Page (no parent)</option>
-															<option className="level-0" value={4075}>
-																test
-															</option>
-														</select>
-													</label>
 													<div className="inline-edit-group wp-clearfix">
 														<label className="alignleft">
 															<span className="title">Comments</span>
 															<select name="comment_status">
+																<option value="">— No Change —</option>
+																<option value="open">Allow</option>
+																<option value="closed">Do not allow</option>
+															</select>
+														</label>
+														<label className="alignright">
+															<span className="title">Pings</span>
+															<select name="ping_status">
 																<option value="">— No Change —</option>
 																<option value="open">Allow</option>
 																<option value="closed">Do not allow</option>
@@ -581,6 +646,14 @@ export default function Edit() {
 																<option value="draft">Draft</option>
 															</select>
 														</label>
+														<label className="alignright">
+															<span className="title">Sticky</span>
+															<select name="sticky">
+																<option value="">— No Change —</option>
+																<option value="sticky">Sticky</option>
+																<option value="unsticky">Not Sticky</option>
+															</select>
+														</label>
 													</div>
 												</div>
 											</fieldset>
@@ -590,7 +663,7 @@ export default function Edit() {
 													Cancel
 												</button>
 												<input type="hidden" name="post_view" defaultValue="list" />
-												<input type="hidden" name="screen" defaultValue="edit-page" />
+												<input type="hidden" name="screen" defaultValue="edit-post" />
 												<div className="notice notice-error notice-alt inline hidden">
 													<p className="error" />
 												</div>
