@@ -1,5 +1,33 @@
 import React from "react";
-export default function Upload() {
+import { getDb } from "@/lib/fakebase/client";
+import { fileSize, items, wpDate } from "@/lib/fakebase/format";
+import type { MediaRow, UserRow } from "@/lib/fakebase/schema";
+
+function mediaType(mime: string): string {
+	if (mime.startsWith("image/")) return "image";
+	if (mime.startsWith("audio/")) return "audio";
+	if (mime.startsWith("video/")) return "video";
+	if (mime === "application/pdf") return "application/pdf";
+	return "application";
+}
+
+function iconClass(mime: string): string {
+	const t = mediaType(mime);
+	if (t === "image") return "";
+	if (t === "audio") return "dashicons dashicons-format-audio";
+	if (t === "video") return "dashicons dashicons-format-video";
+	if (t === "application/pdf") return "dashicons dashicons-media-document";
+	return "dashicons dashicons-media-default";
+}
+
+export default async function Upload() {
+	const db = await getDb();
+	const [mediaRes, usersRes] = await Promise.all([db.from("media").select("*").order("date", { ascending: false }), db.from("users").select("*")]);
+	const files: MediaRow[] = mediaRes.data ?? [];
+	const users: UserRow[] = usersRes.data ?? [];
+	const userById = new Map(users.map((u) => [u.id, u]));
+	const total = files.length;
+
 	return (
 		<>
 			<div id="wpbody-content">
@@ -54,148 +82,205 @@ export default function Upload() {
 						</button>
 					</div>
 				</div>
-				<div className="wrap" id="wp-media-grid" data-search="">
+				<div className="wrap">
 					<h1 className="wp-heading-inline">Media Library</h1>
-					<a href="/" className="page-title-action aria-button-if-js" role="button" aria-expanded="false">
-						Add New
+					<a href="/rp-admin/media-new" className="page-title-action">
+						Add New Media File
 					</a>
 					<hr className="wp-header-end" />
-					<div className="error hide-if-js">
-						<p>
-							The grid view for the Media Library requires JavaScript. <a href="/">Switch to the list view</a>.
-						</p>
-					</div>
-					<div className="media-frame wp-core-ui mode-grid mode-edit hide-menu">
-						<div className="media-frame-title" id="media-frame-title">
-							<h1 />
-						</div>
-						<h2 className="media-frame-menu-heading">Actions</h2>
-						<button type="button" className="button button-link media-frame-menu-toggle" aria-expanded="false">
-							Menu <span className="dashicons dashicons-arrow-down" aria-hidden="true" />
-						</button>
-						<div className="media-frame-menu">
-							<div role="tablist" aria-orientation="vertical" className="media-menu" />
-						</div>
-						<div className="media-frame-tab-panel">
-							<div className="media-frame-router" />
-							<div className="media-frame-content" data-columns={7}>
-								<div className="attachments-browser has-load-more hide-sidebar sidebar-for-errors">
-									<div className="media-sidebar">
-										<div className="media-uploader-status" style={{ display: "none" }}>
-											<h2>Uploading</h2>
-											<div className="media-progress-bar">
-												<div />
-											</div>
-											<div className="upload-details">
-												<span className="upload-count">
-													<span className="upload-index" /> / <span className="upload-total" />
-												</span>
-												<span className="upload-detail-separator">–</span>
-												<span className="upload-filename" />
-											</div>
-											<div className="upload-errors" />
-											<button type="button" className="button upload-dismiss-errors">
-												Dismiss errors
-											</button>
-										</div>
-									</div>
-									<div className="uploader-inline hidden">
-										<button className="close dashicons dashicons-no">
-											<span className="screen-reader-text">Close uploader</span>
-										</button>
-										<div className="uploader-inline-content no-upload-message">
-											<div className="upload-ui">
-												<h2 className="upload-instructions drop-instructions">Drop files to upload</h2>
-												<p className="upload-instructions drop-instructions">or</p>
-												<button
-													type="button"
-													className="browser button button-hero"
-													id="__wp-uploader-id-1"
-													aria-labelledby="__wp-uploader-id-1 post-upload-info"
-													style={{
-														position: "relative",
-														zIndex: 1,
-													}}
-												>
-													Select Files
-												</button>
-											</div>
-											<div className="upload-inline-status" />
-											<div className="post-upload-ui" id="post-upload-info">
-												<p className="max-upload-size">Maximum upload file size: 256 MB. </p>
-											</div>
-										</div>
-									</div>
-									<div className="media-toolbar wp-filter">
-										<div className="media-toolbar-secondary">
-											<h2 className="media-attachments-filter-heading">Filter media</h2>
-											<div className="view-switch media-grid-view-switch">
-												<a href="/" className="view-list">
-													<span className="screen-reader-text">List view</span>
-												</a>
-												<a href="/" className="view-grid current" aria-current="page">
-													<span className="screen-reader-text">Grid view</span>
-												</a>
-											</div>
-											<label htmlFor="media-attachment-filters" className="screen-reader-text">
-												Filter by type
-											</label>
-											<select id="media-attachment-filters" className="attachment-filters">
-												<option value="all">All media items</option>
-												<option value="image">Images</option>
-												<option value="audio">Audio</option>
-												<option value="video">Video</option>
-												<option value="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-word.document.macroEnabled.12,application/vnd.ms-word.template.macroEnabled.12,application/vnd.oasis.opendocument.text,application/vnd.apple.pages,application/pdf,application/vnd.ms-xpsdocument,application/oxps,application/rtf,application/wordperfect,application/octet-stream">Documents</option>
-												<option value="application/vnd.apple.numbers,application/vnd.oasis.opendocument.spreadsheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12">Spreadsheets</option>
-												<option value="application/x-gzip,application/rar,application/x-tar,application/zip,application/x-7z-compressed">Archives</option>
-												<option value="unattached">Unattached</option>
-												<option value="mine">Mine</option>
-											</select>
-											<button type="button" className="button media-button button-primary button-large delete-selected-button hidden" disabled={true}>
-												Delete permanently
-											</button>
-											<label htmlFor="media-attachment-date-filters" className="screen-reader-text">
-												Filter by date
-											</label>
-											<select id="media-attachment-date-filters" className="attachment-filters">
-												<option value="all">All dates</option>
-											</select>
-											<button type="button" className="button media-button select-mode-toggle-button">
-												Bulk select
-											</button>
-											<span className="spinner" />
-										</div>
-										<div className="media-toolbar-primary search-form">
-											<label htmlFor="media-search-input" className="media-search-input-label">
-												Search
-											</label>
-											<input type="search" id="media-search-input" className="search" />
-										</div>
-									</div>
-									<h2 className="media-views-heading screen-reader-text">Media list</h2>
-									<div className="attachments-wrapper">
-										<ul tabIndex={-1} className="attachments ui-sortable ui-sortable-disabled" id="__attachments-view-47" />
-										<div className="load-more-wrapper">
-											<span className="spinner" />
-											<p className="load-more-count hidden" />
-											<button type="button" className="button load-more hidden button-primary">
-												Load more
-											</button>
-											<button type="button" className="button load-more-jump hidden" disabled={false}>
-												Jump to first loaded item
-											</button>
-										</div>
-									</div>
-									<p className="no-media">No media items found.</p>
+					<form id="posts-filter" method="get">
+						<div className="wp-filter">
+							<div className="filter-items">
+								<div className="view-switch media-grid-view-switch">
+									<a href="/" className="view-list">
+										<span className="screen-reader-text">List view</span>
+									</a>
+									<a href="/" className="view-grid current" aria-current="page">
+										<span className="screen-reader-text">Grid view</span>
+									</a>
 								</div>
+								<label htmlFor="filter-by-type" className="screen-reader-text">
+									Filter by type
+								</label>
+								<select name="attachment-filter" id="filter-by-type">
+									<option value="all">All media items</option>
+									<option value="image">Images</option>
+									<option value="audio">Audio</option>
+									<option value="video">Video</option>
+									<option value="application">Documents</option>
+								</select>
+								<label htmlFor="filter-by-date" className="screen-reader-text">
+									Filter by date
+								</label>
+								<select name="m" id="filter-by-date">
+									<option value={0}>All dates</option>
+									<option value="202303">March 2023</option>
+									<option value="202302">February 2023</option>
+								</select>
+								<input type="submit" id="post-query-submit" className="button" defaultValue="Filter" />
 							</div>
+							<p className="search-box">
+								<label className="screen-reader-text" htmlFor="media-search-input">
+									Search Media:
+								</label>
+								<input type="search" id="media-search-input" name="s" defaultValue="" />
+								<input type="submit" id="search-submit" className="button" defaultValue="Search Media" />
+							</p>
 						</div>
-						<h2 className="media-frame-actions-heading screen-reader-text">Selected media actions </h2>
-						<div className="media-frame-toolbar" />
-						<div className="media-frame-uploader" />
-					</div>
+						<div className="tablenav top">
+							<div className="alignleft actions bulkactions">
+								<label htmlFor="bulk-action-selector-top" className="screen-reader-text">
+									Select bulk action
+								</label>
+								<select name="action" id="bulk-action-selector-top">
+									<option value={-1}>Bulk actions</option>
+									<option value="delete">Delete permanently</option>
+								</select>
+								<input type="submit" id="doaction" className="button action" defaultValue="Apply" />
+							</div>
+							<div className="tablenav-pages one-page">
+								<span className="displaying-num">{items(total)}</span>
+							</div>
+							<br className="clear" />
+						</div>
+						<h2 className="screen-reader-text">Media list</h2>
+						<table className="wp-list-table widefat fixed striped table-view-list media">
+							<thead>
+								<tr>
+									<td id="cb" className="manage-column column-cb check-column">
+										<label className="screen-reader-text" htmlFor="cb-select-all-1">
+											Select All
+										</label>
+										<input id="cb-select-all-1" type="checkbox" />
+									</td>
+									<th scope="col" id="icon" className="manage-column column-icon">
+										<span className="screen-reader-text">File thumbnail</span>
+									</th>
+									<th scope="col" id="title" className="manage-column column-title column-primary">
+										File
+									</th>
+									<th scope="col" id="author" className="manage-column column-author">
+										Author
+									</th>
+									<th scope="col" id="parent" className="manage-column column-parent">
+										Uploaded to
+									</th>
+									<th scope="col" id="date" className="manage-column column-date sortable desc">
+										<a href="/">
+											<span>Date</span>
+											<span className="sorting-indicator" />
+										</a>
+									</th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								{files.map((f) => {
+									const author = userById.get(f.author_id);
+									const icon = iconClass(f.mime_type);
+									const isImage = f.mime_type.startsWith("image/");
+									return (
+										<tr key={f.id} id={`post-${f.id}`} className="iedit author-self level-0 hentry">
+											<th scope="row" className="check-column">
+												<label className="screen-reader-text" htmlFor={`cb-select-${f.id}`}>
+													Select {f.title}
+												</label>
+												<input type="checkbox" name="media[]" id={`cb-select-${f.id}`} defaultValue={f.id} />
+											</th>
+											<td className="icon column-icon">
+												{isImage ? <img width={60} height={60} src={f.url} className="attachment-60x60 size-60x60" alt="" loading="lazy" decoding="async" /> : <span className={icon} aria-hidden="true" />}
+											</td>
+											<td className="title column-title has-row-actions column-primary" data-colname="File">
+												<strong>
+													<a href="/" aria-label={`“${f.title}” (Edit)`}>
+														{f.title}
+													</a>
+												</strong>
+												<p className="filename">
+													<span className="screen-reader-text">File name: </span>
+													{f.filename}
+												</p>
+												<div className="row-actions">
+													<span className="edit">
+														<a href="/" aria-label={`Edit “${f.title}”`}>
+															Edit
+														</a>
+														|
+													</span>
+													<span className="delete">
+														<a href="/" className="submitdelete aria-button-if-js" aria-label={`Delete “${f.title}” permanently`}>
+															Delete Permanently
+														</a>
+														|
+													</span>
+													<span className="view">
+														<a href={f.url} aria-label={`View “${f.title}”`}>
+															View
+														</a>
+													</span>
+												</div>
+											</td>
+											<td className="author column-author" data-colname="Author">
+												<a href="/">{author?.display_name ?? "—"}</a>
+											</td>
+											<td className="parent column-parent" data-colname="Uploaded to">
+												<span aria-hidden="true">— ({fileSize(f.file_size)})</span>
+												<span className="screen-reader-text">Unattached, {fileSize(f.file_size)}</span>
+											</td>
+											<td className="date column-date" data-colname="Date">
+												{wpDate(f.date)}
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+							<tfoot>
+								<tr>
+									<td className="manage-column column-cb check-column">
+										<label className="screen-reader-text" htmlFor="cb-select-all-2">
+											Select All
+										</label>
+										<input id="cb-select-all-2" type="checkbox" />
+									</td>
+									<th scope="col" className="manage-column column-icon">
+										<span className="screen-reader-text">File thumbnail</span>
+									</th>
+									<th scope="col" className="manage-column column-title column-primary">
+										File
+									</th>
+									<th scope="col" className="manage-column column-author">
+										Author
+									</th>
+									<th scope="col" className="manage-column column-parent">
+										Uploaded to
+									</th>
+									<th scope="col" className="manage-column column-date sortable desc">
+										<a href="/">
+											<span>Date</span>
+											<span className="sorting-indicator" />
+										</a>
+									</th>
+								</tr>
+							</tfoot>
+						</table>
+						<div className="tablenav bottom">
+							<div className="alignleft actions bulkactions">
+								<label htmlFor="bulk-action-selector-bottom" className="screen-reader-text">
+									Select bulk action
+								</label>
+								<select name="action2" id="bulk-action-selector-bottom">
+									<option value={-1}>Bulk actions</option>
+									<option value="delete">Delete permanently</option>
+								</select>
+								<input type="submit" id="doaction2" className="button action" defaultValue="Apply" />
+							</div>
+							<div className="tablenav-pages one-page">
+								<span className="displaying-num">{items(total)}</span>
+							</div>
+							<br className="clear" />
+						</div>
+					</form>
+					<div className="clear" />
 				</div>
-				<div className="clear" />
 			</div>
 		</>
 	);
