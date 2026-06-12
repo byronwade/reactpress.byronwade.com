@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import "./index.css";
 import Sidebar from "../components/Admin/Common/sidebar";
 import Toolbar from "../components/Admin/Common/toolbar";
+import Footer from "../components/Admin/Common/Footer/Footer";
 
 interface Props {
 	children?: ReactNode;
@@ -20,6 +21,7 @@ export default function RPAdmin({ children }: Props) {
 							{children}
 						</div>
 					</div>
+					<Footer />
 				</div>
 			</div>
 		</div>

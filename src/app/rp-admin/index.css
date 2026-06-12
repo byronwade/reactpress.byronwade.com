@@ -3761,22 +3761,10 @@ p.auto-update-status {
 .plugins .name {
 	font-weight: 600;
 }
-#wpfooter {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	padding: 10px 20px;
-	color: #50575e;
-}
-#wpfooter p {
-	font-size: 13px;
-	margin: 0;
-	line-height: 1.55;
-}
-#footer-thankyou {
-	font-style: italic;
-}
+/* #wpfooter visual styles converted to Tailwind on the Footer component
+   (components/Admin/Common/Footer/Footer.tsx). The structural margin-left
+   (the #wpcontent, #wpfooter rule and its .folded/.auto-fold offsets) stays
+   here as the shell layer. */
 .nav-tab {
 	float: left;
 	border: 1px solid #c3c4c7;
@@ -5213,9 +5201,6 @@ img {
 	}
 	#documentation input[type="button"] {
 		margin-bottom: 0;
-	}
-	#wpfooter {
-		display: none;
 	}
 	#comments-form .checkforspam {
 		display: none;
