@@ -209,7 +209,7 @@ export default function EditTags() {
 										<br className="clear" />
 									</div>
 									<h2 className="screen-reader-text">Categories list</h2>
-									<table className="wp-list-table widefat fixed striped table-view-list tags">
+									<table className="wp-list-table widefat fixed striped table-view-list categories">
 										<thead>
 											<tr>
 												<td id="cb" className="manage-column column-cb check-column">
@@ -244,7 +244,7 @@ export default function EditTags() {
 												</th>
 											</tr>
 										</thead>
-										<tbody id="the-list" data-wp-lists="list:tag">
+										<tbody id="the-list" data-wp-lists="list:category">
 											<tr id="tag-1" className="level-0">
 												<th scope="row" className="check-column">
 													&nbsp;
