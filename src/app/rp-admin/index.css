@@ -1983,13 +1983,9 @@ html:lang(he-il) .rtl #wpadminbar * {
 	}
 }
 /*! This file is auto-generated */
-#wpwrap {
-	height: auto;
-	min-height: 100%;
-	width: 100%;
-	position: relative;
-	-webkit-font-smoothing: subpixel-antialiased;
-}
+/* #wpwrap base styles converted to Tailwind on the #wpwrap div in
+   rp-admin/layout.tsx. Stateful #wpwrap rules (modal-open, wp-responsive-open)
+   remain below as CSS. */
 #wpcontent {
 	height: 100%;
 	padding-left: 20px;
@@ -16384,9 +16380,8 @@ ul.add-menu-item-tabs li {
 .metabox-holder-disabled .button-controls .select-all {
 	display: none;
 }
-#wpbody {
-	position: relative;
-}
+/* #wpbody base (position:relative) converted to Tailwind on #wpbody in
+   rp-admin/layout.tsx. */
 .is-submenu {
 	color: #50575e;
 	font-style: italic;

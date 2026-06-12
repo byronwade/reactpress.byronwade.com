@@ -14,10 +14,10 @@ export default function RPAdmin({ children }: Props) {
 		<div className="wp-toolbar">
 			<div className="wp-admin wp-core-ui js edit-php auto-fold admin-bar post-type-page branch-6-1 version-6-1-1 admin-color-fresh locale-en-us customize-support sticky-menu svg">
 				<Toolbar />
-				<div id="wpwrap">
+				<div id="wpwrap" className="tw-relative tw-h-auto tw-min-h-full tw-w-full tw-[-webkit-font-smoothing:subpixel-antialiased]">
 					<Sidebar />
 					<div id="wpcontent">
-						<div id="wpbody" role="main">
+						<div id="wpbody" role="main" className="tw-relative">
 							{children}
 						</div>
 					</div>
