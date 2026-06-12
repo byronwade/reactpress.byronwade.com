@@ -2,7 +2,7 @@
  * Mock seed data for the ReactPress admin. Inserted into the in-memory
  * Fakebase kernel once per server process (see `client.ts`).
  */
-import type { CommentRow, MediaRow, PluginRow, PostRow, TermRow, UserRow } from "./schema";
+import type { CommentRow, MediaRow, OptionRow, PluginRow, PostRow, TermRow, UserRow } from "./schema";
 
 export const users: UserRow[] = [
 	{ id: 1, username: "byron", email: "bcw1995@gmail.com", display_name: "Byron Wade", role: "administrator", url: "https://byronwade.com", registered_at: "2023-01-04T15:12:00Z", post_count: 3 },
@@ -46,4 +46,20 @@ export const media: MediaRow[] = [
 	{ id: 101, title: "hero-banner", filename: "hero-banner.jpg", mime_type: "image/jpeg", url: "/uploads/hero-banner.jpg", author_id: 1, file_size: 248320, date: "2023-02-17T10:00:00Z" },
 	{ id: 102, title: "team-photo", filename: "team-photo.png", mime_type: "image/png", url: "/uploads/team-photo.png", author_id: 2, file_size: 519400, date: "2023-03-05T16:05:00Z" },
 	{ id: 103, title: "brochure", filename: "brochure.pdf", mime_type: "application/pdf", url: "/uploads/brochure.pdf", author_id: 1, file_size: 1048576, date: "2023-03-08T13:30:00Z" },
+];
+
+export const options: OptionRow[] = [
+	{ option_name: "blogname", option_value: "My ReactPress" },
+	{ option_name: "blogdescription", option_value: "Just another ReactPress site" },
+	{ option_name: "siteurl", option_value: "https://reactpress.byronwade.com" },
+	{ option_name: "home", option_value: "https://reactpress.byronwade.com" },
+	{ option_name: "admin_email", option_value: "bw@wadesinc.io" },
+	{ option_name: "users_can_register", option_value: "0" },
+	{ option_name: "default_role", option_value: "subscriber" },
+	{ option_name: "timezone_string", option_value: "America/New_York" },
+	{ option_name: "date_format", option_value: "F j, Y" },
+	{ option_name: "time_format", option_value: "g:i a" },
+	{ option_name: "start_of_week", option_value: "1" },
+	{ option_name: "posts_per_page", option_value: "10" },
+	{ option_name: "default_comment_status", option_value: "open" },
 ];

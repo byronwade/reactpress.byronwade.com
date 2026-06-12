@@ -94,6 +94,14 @@ export const schema: ProjectSchemaIR = {
 			col("file_size", "int4", { nullable: false, defaultSql: "0" }),
 			col("date", "timestamptz", { nullable: false }),
 		]),
+		table(
+			"options",
+			[
+				col("option_name", "text", { primaryKey: true }),
+				col("option_value", "text", { nullable: false, defaultSql: "''" }),
+			],
+			"option_name"
+		),
 	],
 };
 
@@ -170,6 +178,10 @@ export type MediaRow = {
 	file_size: number;
 	date: string;
 }
+export type OptionRow = {
+	option_name: string;
+	option_value: string;
+}
 
 export type Database = {
 	public: {
@@ -180,6 +192,7 @@ export type Database = {
 			comments: { Row: CommentRow; Insert: CommentRow; Update: Partial<CommentRow> };
 			plugins: { Row: PluginRow; Insert: PluginRow; Update: Partial<PluginRow> };
 			media: { Row: MediaRow; Insert: MediaRow; Update: Partial<MediaRow> };
+			options: { Row: OptionRow; Insert: OptionRow; Update: Partial<OptionRow> };
 		};
 		Views: Record<string, { Row: Record<string, unknown> }>;
 	};

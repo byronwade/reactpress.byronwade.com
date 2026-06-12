@@ -1,5 +1,8 @@
 import React from "react";
-export default function OptionsGeneral() {
+import { getOptions } from "@/lib/fakebase/client";
+
+export default async function OptionsGeneral() {
+	const opt = await getOptions();
 	return (
 		<>
 			<div id="wpbody-content">
@@ -62,7 +65,7 @@ export default function OptionsGeneral() {
 										<label htmlFor="blogname">Site Title</label>
 									</th>
 									<td>
-										<input name="blogname" type="text" id="blogname" defaultValue="My ReactPress" className="regular-text" />
+										<input name="blogname" type="text" id="blogname" defaultValue={opt("blogname")} className="regular-text" />
 									</td>
 								</tr>
 								<tr>
@@ -70,7 +73,7 @@ export default function OptionsGeneral() {
 										<label htmlFor="blogdescription">Tagline</label>
 									</th>
 									<td>
-										<input name="blogdescription" type="text" id="blogdescription" aria-describedby="tagline-description" defaultValue="" className="regular-text" placeholder="Just another ReactPress site" />
+										<input name="blogdescription" type="text" id="blogdescription" aria-describedby="tagline-description" defaultValue={opt("blogdescription")} className="regular-text" placeholder="Just another ReactPress site" />
 										<p className="description" id="tagline-description">
 											In a few words, explain what this site is about.
 										</p>
@@ -81,7 +84,7 @@ export default function OptionsGeneral() {
 										<label htmlFor="siteurl">ReactPress Address (URL)</label>
 									</th>
 									<td>
-										<input name="siteurl" type="url" id="siteurl" defaultValue="http://byronw34.sg-host.com" className="regular-text code" />
+										<input name="siteurl" type="url" id="siteurl" defaultValue={opt("siteurl")} className="regular-text code" />
 									</td>
 								</tr>
 								<tr>
@@ -89,7 +92,7 @@ export default function OptionsGeneral() {
 										<label htmlFor="home">Site Address (URL)</label>
 									</th>
 									<td>
-										<input name="home" type="url" id="home" aria-describedby="home-description" defaultValue="http://byronw34.sg-host.com" className="regular-text code" />
+										<input name="home" type="url" id="home" aria-describedby="home-description" defaultValue={opt("home")} className="regular-text code" />
 										<p className="description" id="home-description">
 											Enter the address here if you <a href="/">want your site home page to be different from your ReactPress installation directory</a>.
 										</p>
@@ -100,7 +103,7 @@ export default function OptionsGeneral() {
 										<label htmlFor="new_admin_email">Administration Email Address</label>
 									</th>
 									<td>
-										<input name="new_admin_email" type="email" id="new_admin_email" aria-describedby="new-admin-email-description" defaultValue="bcw1995@gmail.com" className="regular-text ltr" />
+										<input name="new_admin_email" type="email" id="new_admin_email" aria-describedby="new-admin-email-description" defaultValue={opt("admin_email")} className="regular-text ltr" />
 										<p className="description" id="new-admin-email-description">
 											This address is used for admin purposes. If you change this, an email will be sent to your new address to confirm it. <strong>The new address will not become active until confirmed.</strong>
 										</p>

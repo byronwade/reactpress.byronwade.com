@@ -39,6 +39,7 @@ async function seedOnce(db: Db): Promise<void> {
 	await db.from("comments").insert(seed.comments);
 	await db.from("plugins").insert(seed.plugins);
 	await db.from("media").insert(seed.media);
+	await db.from("options").insert(seed.options);
 }
 
 /**
@@ -50,4 +51,15 @@ export async function getDb(): Promise<Db> {
 	g.seeded ??= seedOnce(db);
 	await g.seeded;
 	return db;
+}
+
+/**
+ * Convenience helper: returns site options as a `name -> value` lookup with a
+ * fallback, for driving the Settings forms.
+ */
+export async function getOptions(): Promise<(name: string, fallback?: string) => string> {
+	const db = await getDb();
+	const { data } = await db.from("options").select("*");
+	const map = new Map((data ?? []).map((o) => [o.option_name, o.option_value]));
+	return (name: string, fallback = "") => map.get(name) ?? fallback;
 }
