@@ -1,5 +1,27 @@
 import React from "react";
-export default function Edit() {
+import { getDb } from "@/lib/fakebase/client";
+import { items, statusLabel, wpDate } from "@/lib/fakebase/format";
+import type { PostRow, TermRow, UserRow } from "@/lib/fakebase/schema";
+
+function slugify(s: string): string {
+	return s
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "");
+}
+
+export default async function Edit() {
+	const db = await getDb();
+	const [postsRes, usersRes, catsRes] = await Promise.all([db.from("posts").select("*").eq("type", "post").order("date", { ascending: false }), db.from("users").select("*"), db.from("terms").select("*").eq("taxonomy", "category").order("name", { ascending: true })]);
+	const posts: PostRow[] = postsRes.data ?? [];
+	const users: UserRow[] = usersRes.data ?? [];
+	const cats: TermRow[] = catsRes.data ?? [];
+	const userById = new Map(users.map((u) => [u.id, u]));
+
+	const total = posts.length;
+	const published = posts.filter((p) => p.status === "publish").length;
+	const drafts = posts.filter((p) => p.status === "draft").length;
+
 	return (
 		<>
 			<div id="wpbody-content">
@@ -110,7 +132,7 @@ export default function Edit() {
 				</div>
 				<div className="wrap">
 					<h1 className="wp-heading-inline">Posts</h1>
-					<a href="/" className="page-title-action">
+					<a href="/rp-admin/posts/post-new" className="page-title-action">
 						Add New
 					</a>
 					<hr className="wp-header-end" />
@@ -118,15 +140,25 @@ export default function Edit() {
 					<ul className="subsubsub">
 						<li className="all">
 							<a href="/" className="current" aria-current="page">
-								All <span className="count">(1)</span>
+								All <span className="count">({total})</span>
 							</a>
-							|
+							{published > 0 || drafts > 0 ? " |" : ""}
 						</li>
-						<li className="publish">
-							<a href="/">
-								Published <span className="count">(1)</span>
-							</a>
-						</li>
+						{published > 0 ? (
+							<li className="publish">
+								<a href="/">
+									Published <span className="count">({published})</span>
+								</a>
+								{drafts > 0 ? " |" : ""}
+							</li>
+						) : null}
+						{drafts > 0 ? (
+							<li className="draft">
+								<a href="/">
+									Drafts <span className="count">({drafts})</span>
+								</a>
+							</li>
+						) : null}
 					</ul>
 					<form id="posts-filter" method="get">
 						<p className="search-box">
@@ -161,20 +193,23 @@ export default function Edit() {
 								<select name="m" id="filter-by-date">
 									<option selected={true}>All dates</option>
 									<option>February 2023</option>
+									<option>March 2023</option>
 								</select>
 								<label className="screen-reader-text" htmlFor="cat">
 									Filter by category
 								</label>
 								<select name="cat" id="cat" className="postform">
 									<option value={0}>All Categories</option>
-									<option className="level-0" value={1}>
-										Uncategorized
-									</option>
+									{cats.map((c) => (
+										<option key={c.id} className="level-0" value={c.id}>
+											{c.name}
+										</option>
+									))}
 								</select>
 								<input type="submit" name="filter_action" id="post-query-submit" className="button" defaultValue="Filter" />
 							</div>
 							<div className="tablenav-pages one-page">
-								<span className="displaying-num">1 item</span>
+								<span className="displaying-num">{items(total)}</span>
 								<span className="pagination-links">
 									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 										«
@@ -244,100 +279,120 @@ export default function Edit() {
 								</tr>
 							</thead>
 							<tbody id="the-list">
-								<tr id="post-1" className="iedit author-self level-0 post-1 type-post status-publish format-standard hentry category-uncategorized">
-									<th scope="row" className="check-column">
-										<label className="screen-reader-text" htmlFor="cb-select-1">
-											Select Hello world!
-										</label>
-										<input id="cb-select-1" type="checkbox" name="post[]" defaultValue={1} />
-										<div className="locked-indicator">
-											<span className="locked-indicator-icon" aria-hidden="true" />
-											<span className="screen-reader-text">“Hello world!” is locked </span>
-										</div>
-									</th>
-									<td className="title column-title has-row-actions column-primary page-title" data-colname="Title">
-										<div className="locked-info">
-											<span className="locked-avatar" /> <span className="locked-text" />
-										</div>
-										<strong>
-											<a className="row-title" href="/" aria-label="“Hello world!” (Edit)">
-												Hello world!
-											</a>
-										</strong>
-										<div className="hidden" id="inline_1">
-											<div className="post_title">Hello world!</div>
-											<div className="post_name">hello-world</div>
-											<div className="post_author">1</div>
-											<div className="comment_status">open</div>
-											<div className="ping_status">open</div>
-											<div className="_status">publish</div>
-											<div className="jj">16</div>
-											<div className="mm">02</div>
-											<div className="aa">2023</div>
-											<div className="hh">19</div>
-											<div className="mn">33</div>
-											<div className="ss">13</div>
-											<div className="post_password" />
-											<div className="post_category" data-category="1" />
-											<div className="tags_input" data-tags="" />
-											<div className="sticky" />
-											<div className="post_format">0</div>
-										</div>
-										<div className="row-actions">
-											<span className="edit">
-												<a href="/" aria-label="Edit “Hello world!”">
-													Edit
-												</a>
-												|
-											</span>
-											<span className="inline hide-if-no-js">
-												<button type="button" className="button-link editinline" aria-label="Quick edit “Hello world!” inline" aria-expanded="false">
-													Quick&nbsp;Edit
+								{posts.map((p) => {
+									const author = userById.get(p.author_id);
+									const catClasses = p.categories.map((c) => `category-${slugify(c)}`).join(" ");
+									const dateHeading = p.status === "publish" ? "Published" : p.status === "future" ? "Scheduled" : "Last Modified";
+									const dateValue = p.status === "publish" ? p.date : p.modified;
+									return (
+										<tr key={p.id} id={`post-${p.id}`} className={`iedit author-self level-0 post-${p.id} type-post status-${p.status} format-standard hentry ${catClasses}`.trim()}>
+											<th scope="row" className="check-column">
+												<label className="screen-reader-text" htmlFor={`cb-select-${p.id}`}>
+													Select {p.title}
+												</label>
+												<input id={`cb-select-${p.id}`} type="checkbox" name="post[]" defaultValue={p.id} />
+												<div className="locked-indicator">
+													<span className="locked-indicator-icon" aria-hidden="true" />
+													<span className="screen-reader-text">“{p.title}” is locked </span>
+												</div>
+											</th>
+											<td className="title column-title has-row-actions column-primary page-title" data-colname="Title">
+												<div className="locked-info">
+													<span className="locked-avatar" /> <span className="locked-text" />
+												</div>
+												<strong>
+													<a className="row-title" href="/rp-admin/posts/edit" aria-label={`“${p.title}” (Edit)`}>
+														{p.title}
+													</a>
+													{p.status === "draft" ? <span className="post-state"> — Draft</span> : null}
+													{p.sticky ? <span className="post-state"> — Sticky</span> : null}
+												</strong>
+												<div className="row-actions">
+													<span className="edit">
+														<a href="/rp-admin/posts/edit" aria-label={`Edit “${p.title}”`}>
+															Edit
+														</a>
+														|
+													</span>
+													<span className="inline hide-if-no-js">
+														<button type="button" className="button-link editinline" aria-label={`Quick edit “${p.title}” inline`} aria-expanded="false">
+															Quick&nbsp;Edit
+														</button>
+														|
+													</span>
+													<span className="trash">
+														<a href="/" className="submitdelete" aria-label={`Move “${p.title}” to the Trash`}>
+															Trash
+														</a>
+														|
+													</span>
+													<span className="view">
+														<a href="/" rel="bookmark" aria-label={`View “${p.title}”`}>
+															View
+														</a>
+													</span>
+												</div>
+												<button type="button" className="toggle-row">
+													<span className="screen-reader-text">Show more details</span>
 												</button>
-												|
-											</span>
-											<span className="trash">
-												<a href="/" className="submitdelete" aria-label="Move “Hello world!” to the Trash">
-													Trash
-												</a>
-												|
-											</span>
-											<span className="view">
-												<a href="/" rel="bookmark" aria-label="View “Hello world!”">
-													View
-												</a>
-											</span>
-										</div>
-										<button type="button" className="toggle-row">
-											<span className="screen-reader-text">Show more details</span>
-										</button>
-									</td>
-									<td className="author column-author" data-colname="Author">
-										<a href="/">bcw1995@gmail.com</a>
-									</td>
-									<td className="categories column-categories" data-colname="Categories">
-										<a href="/">Uncategorized</a>
-									</td>
-									<td className="tags column-tags" data-colname="Tags">
-										<span aria-hidden="true">—</span>
-										<span className="screen-reader-text">No tags</span>
-									</td>
-									<td className="comments column-comments" data-colname="Comments">
-										<div className="post-com-count-wrapper">
-											<a href="/" className="post-com-count post-com-count-approved">
-												<span className="comment-count-approved" aria-hidden="true">
-													1
-												</span>
-												<span className="screen-reader-text">1 comment</span>
-											</a>
-										</div>
-									</td>
-									<td className="date column-date" data-colname="Date">
-										Published
-										<br />
-										2023/02/16 at 7:33 pm
-									</td>
-								</tr>
+											</td>
+											<td className="author column-author" data-colname="Author">
+												<a href="/">{author?.display_name ?? "—"}</a>
+											</td>
+											<td className="categories column-categories" data-colname="Categories">
+												{p.categories.length > 0 ? (
+													p.categories.map((c, i) => (
+														<React.Fragment key={c}>
+															<a href="/">{c}</a>
+															{i < p.categories.length - 1 ? ", " : ""}
+														</React.Fragment>
+													))
+												) : (
+													<span aria-hidden="true">—</span>
+												)}
+											</td>
+											<td className="tags column-tags" data-colname="Tags">
+												{p.tags.length > 0 ? (
+													p.tags.map((t, i) => (
+														<React.Fragment key={t}>
+															<a href="/">{t}</a>
+															{i < p.tags.length - 1 ? ", " : ""}
+														</React.Fragment>
+													))
+												) : (
+													<>
+														<span aria-hidden="true">—</span>
+														<span className="screen-reader-text">No tags</span>
+													</>
+												)}
+											</td>
+											<td className="comments column-comments" data-colname="Comments">
+												<div className="post-com-count-wrapper">
+													{p.comment_count > 0 ? (
+														<a href="/" className="post-com-count post-com-count-approved">
+															<span className="comment-count-approved" aria-hidden="true">
+																{p.comment_count}
+															</span>
+															<span className="screen-reader-text">
+																{p.comment_count} comment{p.comment_count === 1 ? "" : "s"}
+															</span>
+														</a>
+													) : (
+														<>
+															<span aria-hidden="true">—</span>
+															<span className="screen-reader-text">No comments</span>
+														</>
+													)}
+												</div>
+											</td>
+											<td className="date column-date" data-colname="Date">
+												{dateHeading}
+												<br />
+												{wpDate(dateValue)}
+											</td>
+										</tr>
+									);
+								})}
 							</tbody>
 							<tfoot>
 								<tr>
@@ -396,7 +451,7 @@ export default function Edit() {
 							</div>
 							<div className="alignleft actions"></div>
 							<div className="tablenav-pages one-page">
-								<span className="displaying-num">1 item</span>
+								<span className="displaying-num">{items(total)}</span>
 								<span className="pagination-links">
 									<span className="tablenav-pages-navspan button disabled" aria-hidden="true">
 										«
@@ -444,57 +499,15 @@ export default function Edit() {
 															<input type="text" name="post_name" defaultValue="" autoComplete="off" spellCheck="false" />
 														</span>
 													</label>
-													<fieldset className="inline-edit-date">
-														<legend>
-															<span className="title">Date</span>
-														</legend>
-														<div className="timestamp-wrap">
-															<label>
-																<span className="screen-reader-text">Month</span>
-																<select className="form-required" name="mm">
-																	<option data-text="Jan">01-Jan</option>
-																	<option data-text="Feb" selected={true}>
-																		02-Feb
-																	</option>
-																	<option data-text="Mar">03-Mar</option>
-																	<option data-text="Apr">04-Apr</option>
-																	<option data-text="May">05-May</option>
-																	<option data-text="Jun">06-Jun</option>
-																	<option data-text="Jul">07-Jul</option>
-																	<option data-text="Aug">08-Aug</option>
-																	<option data-text="Sep">09-Sep</option>
-																	<option data-text="Oct">10-Oct</option>
-																	<option data-text="Nov">11-Nov</option>
-																	<option data-text="Dec">12-Dec</option>
-																</select>
-															</label>
-															<label>
-																<span className="screen-reader-text">Day</span>
-																<input type="text" name="jj" defaultValue={16} size={2} maxLength={2} autoComplete="off" className="form-required" />
-															</label>
-															,
-															<label>
-																<span className="screen-reader-text">Year</span>
-																<input type="text" name="aa" defaultValue={2023} size={4} maxLength={4} autoComplete="off" className="form-required" />
-															</label>
-															at
-															<label>
-																<span className="screen-reader-text">Hour</span>
-																<input type="text" name="hh" defaultValue={19} size={2} maxLength={2} autoComplete="off" className="form-required" />
-															</label>
-															:
-															<label>
-																<span className="screen-reader-text">Minute</span>
-																<input type="text" name="mn" defaultValue={33} size={2} maxLength={2} autoComplete="off" className="form-required" />
-															</label>
-														</div>
-														<input type="hidden" id="ss" name="ss" defaultValue={13} />
-													</fieldset>
 													<br className="clear" />
 													<label className="inline-edit-author">
 														<span className="title">Author</span>
 														<select name="post_author" className="authors">
-															<option value={1}>bcw1995@gmail.com (bcw1995@gmail.com)</option>
+															{users.map((u) => (
+																<option key={u.id} value={u.id}>
+																	{u.display_name} ({u.username})
+																</option>
+															))}
 														</select>
 													</label>
 													<div className="inline-edit-group wp-clearfix">
@@ -517,12 +530,14 @@ export default function Edit() {
 													<span className="title inline-edit-categories-label">Categories</span>
 													<input type="hidden" name="post_category[]" defaultValue={0} />
 													<ul className="cat-checklist category-checklist">
-														<li id="category-1">
-															<label className="selectit">
-																<input defaultValue={1} type="checkbox" name="post_category[]" id="in-category-1" />
-																Uncategorized
-															</label>
-														</li>
+														{cats.map((c) => (
+															<li key={c.id} id={`category-${c.id}`}>
+																<label className="selectit">
+																	<input defaultValue={c.id} type="checkbox" name="post_category[]" id={`in-category-${c.id}`} />
+																	{c.name}
+																</label>
+															</li>
+														))}
 													</ul>
 												</div>
 											</fieldset>
@@ -568,100 +583,6 @@ export default function Edit() {
 													Cancel
 												</button>
 												<span className="spinner" />
-												<input type="hidden" name="post_view" defaultValue="list" />
-												<input type="hidden" name="screen" defaultValue="edit-post" />
-												<div className="notice notice-error notice-alt inline hidden">
-													<p className="error" />
-												</div>
-											</div>
-										</div>
-										{/* end of .inline-edit-wrapper */}
-									</td>
-								</tr>
-								<tr id="bulk-edit" className="inline-edit-row inline-edit-row-post bulk-edit-row bulk-edit-row-post bulk-edit-post" style={{ display: "none" }}>
-									<td colSpan={7} className="colspanchange">
-										<div className="inline-edit-wrapper" role="region" aria-labelledby="bulk-edit-legend">
-											<fieldset className="inline-edit-col-left">
-												<legend className="inline-edit-legend" id="bulk-edit-legend">
-													Bulk Edit
-												</legend>
-												<div className="inline-edit-col">
-													<div id="bulk-title-div">
-														<div id="bulk-titles" />
-													</div>
-												</div>
-											</fieldset>
-											<fieldset className="inline-edit-col-center inline-edit-categories">
-												<div className="inline-edit-col">
-													<span className="title inline-edit-categories-label">Categories</span>
-													<ul className="cat-checklist category-checklist">
-														<li id="category-1">
-															<label className="selectit">
-																<input defaultValue={1} type="checkbox" name="post_category[]" id="in-category-1" />
-																Uncategorized
-															</label>
-														</li>
-													</ul>
-												</div>
-											</fieldset>
-											<fieldset className="inline-edit-col-right">
-												<div className="inline-edit-col">
-													<label className="inline-edit-tags">
-														<span className="title">Tags</span>
-														<textarea cols={22} rows={1} name="tax_input[post_tag]" className="tax_input_post_tag" />
-													</label>
-													<label className="inline-edit-author">
-														<span className="title">Author</span>
-														<select name="post_author" className="authors">
-															<option value={-1}>— No Change —</option>
-															<option value={1}>bcw1995@gmail.com (bcw1995@gmail.com)</option>
-														</select>
-													</label>
-													<div className="inline-edit-group wp-clearfix">
-														<label className="alignleft">
-															<span className="title">Comments</span>
-															<select name="comment_status">
-																<option value="">— No Change —</option>
-																<option value="open">Allow</option>
-																<option value="closed">Do not allow</option>
-															</select>
-														</label>
-														<label className="alignright">
-															<span className="title">Pings</span>
-															<select name="ping_status">
-																<option value="">— No Change —</option>
-																<option value="open">Allow</option>
-																<option value="closed">Do not allow</option>
-															</select>
-														</label>
-													</div>
-													<div className="inline-edit-group wp-clearfix">
-														<label className="inline-edit-status alignleft">
-															<span className="title">Status</span>
-															<select name="_status">
-																<option>— No Change —</option>
-																<option value="publish">Published</option>
-																<option value="private">Private</option>
-																<option value="pending">Pending Review</option>
-																<option value="draft">Draft</option>
-															</select>
-														</label>
-														<label className="alignright">
-															<span className="title">Sticky</span>
-															<select name="sticky">
-																<option value="">— No Change —</option>
-																<option value="sticky">Sticky</option>
-																<option value="unsticky">Not Sticky</option>
-															</select>
-														</label>
-													</div>
-												</div>
-											</fieldset>
-											<div className="submit inline-edit-save">
-												<input type="submit" name="bulk_edit" id="bulk_edit" className="button button-primary" defaultValue="Update" />
-												<button type="button" className="button cancel">
-													Cancel
-												</button>
 												<input type="hidden" name="post_view" defaultValue="list" />
 												<input type="hidden" name="screen" defaultValue="edit-post" />
 												<div className="notice notice-error notice-alt inline hidden">
